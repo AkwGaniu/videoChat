@@ -1,11 +1,15 @@
 {
   "name": "videochatapp",
   "version": "1.0.0",
-  "description": "Simple peer to peer video chat application with socket.oi an wevRTC\u001b[D\u001b[b",
+  "description": "Simple peer to peer video chat application with socket.oi an simple-peer\u001b[D\u001b[b",
   "main": "main.js",
   "scripts": {
     "start": "nodemon server.js",
     "watch": "npx watchify ./public/main.js -o ./public/bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AkwGaniu/videoChat.git"
   },
   "keywords": [
     "videoChat",
@@ -15,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
+    "nodemon": "^2.0.4",
     "simple-peer": "^9.7.2",
     "socket.io": "^2.3.0"
   },
