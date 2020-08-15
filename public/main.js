@@ -1,13 +1,16 @@
 let peer = require('simple-peer')
 const Peer = require('simple-peer')
 let socket = io()
-const video = document.querySelector('vidoe')
+const video = document.querySelector('video')
 let client = {}
+
+console.log(video)
 
 //GET VIDEO STREEM
 navigator.mediaDevices.getUserMedia({video: true, audio: true})
   .then((stream) => {
     socket.emit('newClient')
+    console.log(video)
     video.srcObject = stream
     video.play()
     
