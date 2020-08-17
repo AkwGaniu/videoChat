@@ -8219,7 +8219,7 @@ navigator.mediaDevices.getUserMedia(constraintObj)
       alert("hi inside onStreamPeer")
       createVideo(stream)
     })
-    alert("hi inside makepeer")
+    alert("hi inside initPeer")
 
     peer.on('close', function() {
       document.getElementById('peerVideo').remove()
@@ -8242,7 +8242,6 @@ navigator.mediaDevices.getUserMedia(constraintObj)
       }
     })
     client.peer = peer
-    alert("hi inside makepeer")
   }
 
   // PEER OF TYPE NotInit 
@@ -8263,7 +8262,7 @@ navigator.mediaDevices.getUserMedia(constraintObj)
   function createVideo (stream) {
     let video = document.createElement('video')
     video.id = 'peerVideo'
-    alert("hi inside createVidoe")
+    alert("hi inside createVideo")
     alert(video)
 
     video.srcObject = stream
