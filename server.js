@@ -9,9 +9,10 @@ let clients = 0
 
 io.on('connection', function (socket) {
   socket.on('newClient', function () {
+    this.emit('hi')
     if (clients < 2) {
       if (clients === 1) {
-        this.emit('creatPeer')
+        this.emit('createPeer')
       }
     } else {
       this.emit('sessionActive')

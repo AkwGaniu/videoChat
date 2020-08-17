@@ -28,6 +28,9 @@ if (navigator.mediaDevices === undefined) {
   })
 }
 
+// socket.on('hi', () => {
+//   alert("hi")
+// })
 
 //GET VIDEO STREEM
 navigator.mediaDevices.getUserMedia(constraintObj)
@@ -88,7 +91,6 @@ navigator.mediaDevices.getUserMedia(constraintObj)
   function createVideo (stream) {
     let video = document.createElement('video')
     video.id = 'peerVideo'
-    console.log(video)
     video.srcObject = stream
     if ('srcObject' in video) {
       video.srcObject = stream
