@@ -1,4 +1,4 @@
-let peer = require('simple-peer')
+let Peer = require('simple-peer')
 let socket = io()
 const video = document.querySelector('video')
 
@@ -33,7 +33,6 @@ if (navigator.mediaDevices === undefined) {
 navigator.mediaDevices.getUserMedia(constraintObj)
 .then( function (stream){
   socket.emit('newClient')
-  console.log(video)
   if ('srcObject' in video) {
     video.srcObject = stream
   } else {

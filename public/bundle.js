@@ -8171,7 +8171,7 @@ function config (name) {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],34:[function(require,module,exports){
-let peer = require('simple-peer')
+let Peer = require('simple-peer')
 let socket = io()
 const video = document.querySelector('video')
 
@@ -8206,7 +8206,6 @@ if (navigator.mediaDevices === undefined) {
 navigator.mediaDevices.getUserMedia(constraintObj)
 .then( function (stream){
   socket.emit('newClient')
-  console.log(video)
   if ('srcObject' in video) {
     video.srcObject = stream
   } else {
