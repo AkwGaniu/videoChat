@@ -41,7 +41,7 @@ navigator.mediaDevices.getUserMedia(constraintObj)
 
   // INITIALIZE A PEER
   function initPeer(type) {
-    let peer = new Peer({initiator:(type === 'init')? true : false, stream: stream, trickle: false})
+    let peer = new Peer({initiator: (type == 'init') ? true : false, stream: stream, trickle: false})
     peer.on('stream', function (stream) {
       createVideo(stream)
     })
@@ -59,15 +59,13 @@ navigator.mediaDevices.getUserMedia(constraintObj)
 
   // PEER OF TYPE INIT
   function makePeer() {
+    alert("hi inside makepeer")
     client.gotAnswer = false
     let peer = initPeer('init')
     peer.on('signal', function(data) {
       if (!client.gotAnswer) {
         socket.emit('offer', data)
       }
-    })
-    socket.on('hi', () => {
-      alert("hi inside")
     })
     client.peer = peer
   }
