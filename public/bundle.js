@@ -8250,7 +8250,7 @@ navigator.mediaDevices.getUserMedia(constraintObj)
   function frontAnswer (offer) {
     let peer = initPeer('notInit')
     peer.on('signal', (data) => {
-      socket.emit('Answer', data)
+      socket.emit('answer', data)
     })
     peer.signal(offer)
   }
