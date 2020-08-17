@@ -42,17 +42,19 @@ navigator.mediaDevices.getUserMedia(constraintObj)
   // INITIALIZE A PEER
   function initPeer(type) {
     let peer = new Peer({initiator: (type == 'init') ? true : false, stream: stream, trickle: false})
-    peer.on('stream', function (stream) {
-      alert("hi inside onStreamPeer")
-      createVideo(stream)
-    })
-    alert(JSON.stringify(peer))
-
-    peer.on('close', function() {
-      document.getElementById('peerVideo').remove()
-      peer.destroy()
-    })
-    return peer
+    setTimeout(() => {
+      peer.on('stream', function (stream) {
+        alert("hi inside onStreamPeer")
+        createVideo(stream)
+      })
+      alert(JSON.stringify(peer))
+  
+      peer.on('close', function() {
+        document.getElementById('peerVideo').remove()
+        peer.destroy()
+      })
+      return peer
+    }, 500);
   }
 
   function removeVideo () {
