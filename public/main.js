@@ -28,10 +28,6 @@ if (navigator.mediaDevices === undefined) {
   })
 }
 
-socket.on('hi', () => {
-  alert("hi")
-})
-
 //GET VIDEO STREEM
 navigator.mediaDevices.getUserMedia(constraintObj)
 .then( function (stream){
@@ -109,7 +105,9 @@ navigator.mediaDevices.getUserMedia(constraintObj)
   function sessionActive () {
     document.write('Session Active, Please come back later')
   }
-
+  socket.on('createPeer', () => {
+    alert("hi create peer")
+  })
   socket.on('backOffer ', frontAnswer)
   socket.on('backAnswer', signalAnswer)
   socket.on('sessionActive', sessionActive)
