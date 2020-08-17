@@ -8219,15 +8219,13 @@ navigator.mediaDevices.getUserMedia(constraintObj)
       peer.on('stream', function (stream) {
         alert("hi inside onStreamPeer")
         createVideo(stream)
-      })
-      alert(JSON.stringify(peer))
-  
+      })  
       peer.on('close', function() {
         document.getElementById('peerVideo').remove()
         peer.destroy()
       })
       return peer
-    }, 500);
+    }, 100);
   }
 
   function removeVideo () {
