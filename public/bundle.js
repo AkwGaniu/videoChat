@@ -8201,7 +8201,7 @@ if (navigator.mediaDevices === undefined) {
   })
 }
 
-//GET VIDEO STREEM
+//GET VIDEO STREAM
 navigator.mediaDevices.getUserMedia(constraintObj)
 .then( function (stream){
   socket.emit('newClient')
@@ -8219,7 +8219,7 @@ navigator.mediaDevices.getUserMedia(constraintObj)
       alert("hi inside onStreamPeer")
       createVideo(stream)
     })
-    alert("hi inside initPeer")
+    alert(JSON.stringify(peer))
 
     peer.on('close', function() {
       document.getElementById('peerVideo').remove()
