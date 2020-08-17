@@ -8201,9 +8201,9 @@ if (navigator.mediaDevices === undefined) {
   })
 }
 
-// socket.on('hi', () => {
-//   alert("hi")
-// })
+socket.on('hi', () => {
+  alert("hi")
+})
 
 //GET VIDEO STREEM
 navigator.mediaDevices.getUserMedia(constraintObj)
@@ -8242,6 +8242,9 @@ navigator.mediaDevices.getUserMedia(constraintObj)
       if (!client.gotAnswer) {
         socket.emit('offer', data)
       }
+    })
+    socket.on('hi', () => {
+      alert("hi inside")
     })
     client.peer = peer
   }
