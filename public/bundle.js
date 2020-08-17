@@ -8204,12 +8204,12 @@ if (navigator.mediaDevices === undefined) {
 //GET VIDEO STREEM
 navigator.mediaDevices.getUserMedia(constraintObj)
 .then( function (stream){
+  socket.emit('newClient')
   if ('srcObject' in video) {
     video.srcObject = stream
   } else {
     video.src = window.URL.createObjectURL(stream)
   }
-  socket.emit('newClient')
   video.play()
 
   // INITIALIZE A PEER
