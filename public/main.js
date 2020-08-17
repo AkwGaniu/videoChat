@@ -43,8 +43,10 @@ navigator.mediaDevices.getUserMedia(constraintObj)
   function initPeer(type) {
     let peer = new Peer({initiator: (type == 'init') ? true : false, stream: stream, trickle: false})
     peer.on('stream', function (stream) {
+      alert("hi inside onStreamPeer")
       createVideo(stream)
     })
+    alert("hi inside makepeer")
 
     peer.on('close', function() {
       document.getElementById('peerVideo').remove()
@@ -59,7 +61,6 @@ navigator.mediaDevices.getUserMedia(constraintObj)
 
   // PEER OF TYPE INIT
   function makePeer() {
-    alert("hi inside makepeer")
     client.gotAnswer = false
     let peer = initPeer('init')
     peer.on('signal', function(data) {
@@ -68,6 +69,7 @@ navigator.mediaDevices.getUserMedia(constraintObj)
       }
     })
     client.peer = peer
+    alert("hi inside makepeer")
   }
 
   // PEER OF TYPE NotInit 
@@ -88,6 +90,9 @@ navigator.mediaDevices.getUserMedia(constraintObj)
   function createVideo (stream) {
     let video = document.createElement('video')
     video.id = 'peerVideo'
+    alert("hi inside createVidoe")
+    alert(video)
+
     video.srcObject = stream
     if ('srcObject' in video) {
       video.srcObject = stream
