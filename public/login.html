@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VirTual Class</title>
+  <link rel="stylesheet" href="assets/css/index.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="index.html">VirYual LecTure</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Host a Meeting<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Join a Meeting</a>
+        </li>
+      </ul>
+      <div class="form-inline my-2 my-lg-0">
+        <a href="register.html" class="btn btn-outline-secondary   my-2 my-sm-0">Sign Up</a>
+      </div>
+    </div>
+  </nav>
+  <div id="loginApp">
+    <div class="login-holder">
+      <div class="login">
+        <div class="head">
+          <h3>LogIn</h3>
+          <a href="register.html">Sign Up</a>
+        </div>
+        <span class="successMsg">
+          {{ successMessage }}     
+        </span>
+        <span class="errMsg">
+          {{ error }}
+        </span>
+        <form action="/login" method="post">
+          <div class="form-group">
+            <span><i class="fa fa-user-o" aria-hidden="true"></i></span>
+            <input 
+              type="text" 
+              autocomplete="off" 
+              placeholder="Username"
+              v-model="user.email"
+              @keyup.enter="tryLogin()"
+            >
+          </div>
+          <div class="form-group">
+            <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
+            <input
+              type="password"
+              autocomplete="off"
+              placeholder="Password"
+              v-model="user.password"
+              @keyup.enter="tryLogin()"
+            >
+          </div>
+          <input
+            type="submit"
+            value="Login"
+            @click.prevent="tryLogin()"
+          > 
+        </form>
+      </div>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="footer-content">
+        <div class="row">
+            <div class="col animate__animated animate__fadeInLeft">
+                <div class="img-wrapper">
+                  <img src="assets/images/lasu.png" alt="Lasu Debate Logo">
+                </div>
+            </div>
+            <div class="col">
+                <ul class="animate__animated animate__fadeInLeft">
+                    <li><a href="#">VirTual LecTure</router-link></li>
+                    <li><a href="#">Schedule Meeting</router-link></li>
+                    <li><a href="#">Join Meeting</router-link></li>
+                </ul>
+            </div>
+            <div class="col">
+                <div class="social-links">
+                    <a href=""><i class="fa fa-facebook animate__animated animate__bounce"></i></a>
+                    <a href=""><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                    <a href=""><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                    <a href=""><i class="fa fa-envelope" aria-hidden="true"></i> </a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="signup-cta">
+                    <h2>CONTACT US</h2>
+                    <div class="cta-btn">
+                        <button>NOW</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
+<script>
+  var loginApp = new Vue({
+    el: '#loginApp',
+    data () {
+      return {
+        baseUrl: 'http://localhost:3000/',
+        error: '',
+        successMessage: '',
+        user: {
+          email: '',
+          password: ''
+        }
+      }
+    },
+    methods: {
+      tryLogin () {
+        email = this.user.email
+        password = this.user.password
+
+        if (password === '' || email === '') {
+          this.error = 'Please provide your login credentials'
+        } else if (password.length < 6) {
+          this.error = 'Your password cannot be less than 6 characters'
+        } else {
+          this.error = ''
+          thissuccessMessage =''
+          const payload  = new FormData()
+
+          payload.append('email', email)
+          payload.append('password', password)
+
+          const fetchData  = {
+            method: 'post',
+            body:  payload,
+          }
+
+          let url = `${this.baseUrl}user_login`
+
+          fetch(url, fetchData)
+          .then(resp => {
+              if(resp.ok) {
+                  return resp.json()
+              } else {
+                  return Promise.reject()
+              }
+          })
+          .then(data => {
+            if (data.reply === 'success') {
+              localStorage.setItem('user', JSON.stringify({user: data.user}))
+              self.location = 'index.html'
+            } else {
+              this.error = data.reply
+            }
+          })
+          .catch(error => {
+            console.log(error)
+          })
+        }
+      }
+    },
+    mounted() {
+      const message = localStorage.getItem('message')
+      setTimeout(()=> {
+        if (message !== null) {
+          const msg = JSON.parse(message)
+          this.successMessage = msg.message
+        }
+      }, 1000)
+
+      setTimeout(()=> {
+        this.successMessage = ''
+        localStorage.clear()
+      }, 6000)
+    }
+  })
+</script>

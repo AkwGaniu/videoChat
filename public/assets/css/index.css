@@ -1,0 +1,402 @@
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.carosel-image {
+  height: 400px;
+}
+
+.main-container {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  height: 100vh;
+}
+
+.main-container .video-holder {
+  width: 70%;
+  background-color: #585656;
+}
+
+.main-container .chat-holder {
+  width: 30%;
+}
+
+.main-container .chat-holder .main {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  height: 93.2vh;
+  overflow-y: scroll;
+}
+
+@media (max-width: 768px) {
+  .main-container .chat-holder .main {
+    width: 100%;
+  }
+}
+
+.main-container .chat-holder .main ul {
+  margin: 0;
+  padding-left: 1px;
+}
+
+.main-container .chat-holder .main ul li {
+  list-style-type: none;
+  margin: 10px 2px;
+  width: 60%;
+  padding: 5px;
+  color: #d0d6d5;
+  background-color: #434646;
+}
+
+.main-container .chat-holder footer {
+  width: 100%;
+}
+
+.main-container .chat-holder footer .msg {
+  background-color: #f0f0f0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  width: 100%;
+  border-radius: 10px 10px 0px 0px;
+  padding: 5px 0px 5px 10px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 768px) {
+  .main-container .chat-holder footer .msg {
+    width: 100%;
+  }
+}
+
+.main-container .chat-holder footer .msg input {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  width: 100%;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .main-container .chat-holder footer .msg input {
+    width: 85%;
+  }
+}
+
+.main-container .chat-holder footer .msg .send {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  margin: 0;
+}
+
+.main-container .chat-holder footer .msg .send img {
+  width: 30px;
+}
+
+.main-container .chat-holder footer div {
+  width: 15%;
+}
+
+@media (max-width: 768px) {
+  .main-container .chat-holder footer div {
+    display: none;
+  }
+}
+
+.footer {
+  background: #2d3436;
+  width: 100%;
+  height: auto;
+  padding: .5rem 4rem;
+}
+
+.footer .footer-content .row {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .footer .footer-content .row {
+    display: block;
+  }
+}
+
+.footer .footer-content .row .img-wrapper {
+  width: 200px;
+}
+
+.footer .footer-content .row .img-wrapper img {
+  width: 100%;
+}
+
+.footer .footer-content .row .col {
+  width: 30%;
+}
+
+@media (max-width: 768px) {
+  .footer .footer-content .row .col {
+    width: 100%;
+    text-align: center;
+    margin: 2rem 0;
+  }
+}
+
+.footer .footer-content .row ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.footer .footer-content .row ul li {
+  margin-bottom: 1rem;
+}
+
+.footer .footer-content .row ul li a {
+  text-decoration: none;
+  color: white;
+}
+
+.footer .footer-content .row ul li a:hover {
+  color: #f25c2f;
+}
+
+.footer .footer-content .row .signup-cta {
+  color: white;
+}
+
+.footer .footer-content .row .signup-cta .cta-btn button {
+  padding: 1rem 2rem;
+  background: transparent;
+  color: white;
+  margin: 1rem 0;
+  border: 3px solid white;
+  font-weight: 700;
+}
+
+.footer .footer-content .row .signup-cta .cta-btn button:hover {
+  background: white;
+  color: #000000;
+}
+
+.footer .footer-content .row .social-links {
+  font-size: 32px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  width: 80%;
+}
+
+.footer .footer-content .row .social-links a {
+  color: white;
+}
+
+.footer .footer-content .row .social-links a:hover {
+  color: #f25c2f;
+}
+
+@media (max-width: 768px) {
+  .footer .footer-content .row .social-links {
+    width: 50%;
+    margin: auto;
+  }
+}
+
+#loginApp .login-holder, #regApp .login-holder {
+  width: 100%;
+  padding: 50px 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+#loginApp .login-holder .login, #regApp .login-holder .login {
+  width: 35%;
+  border-radius: 20px;
+  padding: 20px;
+  background-color: #fffafa;
+  -webkit-box-shadow: 2px 2px 4px black;
+  box-shadow: 2px 2px 4px black;
+}
+
+@media (max-width: 768px) {
+  #loginApp .login-holder .login, #regApp .login-holder .login {
+    width: 100%;
+    margin: 0px auto;
+  }
+}
+
+#loginApp .login-holder .login .head, #regApp .login-holder .login .head {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  margin: 0px 0px 30px;
+}
+
+#loginApp .login-holder .login .head h3, #regApp .login-holder .login .head h3 {
+  margin: 0px;
+  color: #4e4e4e;
+  font-weight: bold;
+}
+
+#loginApp .login-holder .login .head a, #regApp .login-holder .login .head a {
+  text-decoration: none;
+  font-weight: bold;
+  padding: 2px 4px;
+  border-radius: 5px;
+  color: #4e4e4e;
+}
+
+#loginApp .login-holder .login .head a:hover, #regApp .login-holder .login .head a:hover {
+  background-color: #2539ac;
+  color: whitesmoke;
+}
+
+#loginApp .login-holder .login .errMsg, #regApp .login-holder .login .errMsg {
+  font-size: 15px;
+  color: #fd4463;
+  margin: 0;
+  padding: 0;
+}
+
+#loginApp .login-holder .login .successMsg, #regApp .login-holder .login .successMsg {
+  font-size: 15px;
+  color: #43ec76;
+  margin: 0;
+  padding: 0;
+}
+
+#loginApp .login-holder .login .form-group, #regApp .login-holder .login .form-group {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid grey;
+  margin: 20px auto 30px;
+}
+
+#loginApp .login-holder .login .form-group input, #regApp .login-holder .login .form-group input {
+  outline: none;
+  border: none;
+  padding-left: 5px;
+  padding-top: 2px;
+  font-size: 14px;
+  background-color: transparent;
+  height: 100%;
+  width: 95%;
+}
+
+#loginApp .login-holder .login .form-group select, #regApp .login-holder .login .form-group select {
+  outline: none;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  padding: 5px 10px;
+  background-color: transparent;
+  height: 100%;
+  width: 95%;
+}
+
+#loginApp .login-holder .login .form-group select option, #regApp .login-holder .login .form-group select option {
+  background-color: #f8ecec;
+}
+
+#loginApp .login-holder .login .form-group option:hover, #regApp .login-holder .login .form-group option:hover {
+  border: 0;
+}
+
+#loginApp .login-holder .login .form-group input::-webkit-input-placeholder, #regApp .login-holder .login .form-group input::-webkit-input-placeholder {
+  font-size: 10px;
+  color: #c7c4c4;
+}
+
+#loginApp .login-holder .login .form-group input:-ms-input-placeholder, #regApp .login-holder .login .form-group input:-ms-input-placeholder {
+  font-size: 10px;
+  color: #c7c4c4;
+}
+
+#loginApp .login-holder .login .form-group input::-ms-input-placeholder, #regApp .login-holder .login .form-group input::-ms-input-placeholder {
+  font-size: 10px;
+  color: #c7c4c4;
+}
+
+#loginApp .login-holder .login .form-group input::placeholder, #regApp .login-holder .login .form-group input::placeholder {
+  font-size: 10px;
+  color: #c7c4c4;
+}
+
+#loginApp .login-holder .login input[type=submit], #regApp .login-holder .login input[type=submit] {
+  background-color: #2539ac;
+  width: 50%;
+  margin: 0px 0px 0px 50%;
+  padding: 5px 10px;
+  font-size: 17px;
+  font-weight: bold;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  color: whitesmoke;
+}
+
+#loginApp .login-holder .login input[type=submit]:hover, #regApp .login-holder .login input[type=submit]:hover {
+  background-color: #000e5f;
+}
+
+#loginApp span, #regApp span {
+  cursor: pointer;
+}
+
+#loginApp .file-name, #regApp .file-name {
+  font-size: 10px;
+  color: #c7c4c4;
+  cursor: pointer;
+}
+
+#loginApp .file-input, #regApp .file-input {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  top: 5px;
+  cursor: pointer;
+}

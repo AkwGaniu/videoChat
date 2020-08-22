@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtaul Lecture</title>
+  <link rel="stylesheet" href="assets/css/index.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="index.html">VirYual LecTure</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Host a Meeting<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Join a Meeting</a>
+        </li>
+      </ul>
+      <div class="form-inline my-2 my-lg-0">
+        <a href="login.html" class="btn btn-outline-secondary my-2 mr-4 my-sm-0">Sign In</a>
+      </div>
+    </div>
+  </nav>
+<div id="regApp">
+  <div class="login-holder">
+    <div class="login">
+      <div class="head">
+        <h3>Register</h3>
+        <a href="login.html">Sign In</a>
+      </div>
+      <span class="errMsg">
+        {{ error }} 
+      </span>
+      <form action="#" enctype="multipart/form-data" method="post">
+        <div class="form-group">
+          <span><i class="fa fa-user-o" aria-hidden="true"></i></span>
+          <input
+            type="text"
+            v-model="user.names"
+            autocomplete="off"
+            placeholder="Full Name"
+            @keyup.enter="register()"
+          >
+        </div>
+        <div class="form-group">
+          <span><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+          <input
+            type="text"
+            v-model="user.email"
+            autocomplete="off"
+            placeholder="Email"
+            @keyup.enter="register()"
+          >
+        </div>
+        <div class="form-group">
+          <select v-model="user.type">
+            <option value="">Choose User Type</option>
+            <option value="student">Student</option>
+            <option value="lecturer">Lecturer</option>              
+          </select>
+        </div>
+        <div class="form-group">
+          <span>
+            <i class="fa fa-upload" aria-hidden="true"></i>
+            <span :class="[{fileSelected: fileIsSelected}, 'file-name']">
+              {{ file_name }}
+            </span>
+          </span>
+          <input
+            type="file"
+            @change="fileChange($event.target.files)"
+            accept="image/*"
+            autocomplete="off"
+            placeholder="Email"
+            @keyup.enter="register()"
+            class="file-input"
+          >
+        </div>
+        <div class="form-group">
+          <span><i class="fa fa-lock" aria-hidden="true"></i></span>
+          <input
+            type="password"
+            v-model="user.password"
+            autocomplete="off"
+            placeholder="Password"
+            @keyup.enter="register()"
+          >
+        </div>
+        <div class="form-group">
+          <span><i class="fa fa-lock" aria-hidden="true"></i></span>
+          <input 
+            type="password"
+            v-model="user.comfirmpass" 
+            autocomplete="off"
+            placeholder="Comfirm Password"
+            @keyup.enter="register()"
+          >
+        </div>
+        <input
+          type="submit"
+          @click.prevent="register()"
+          value="Sign Up"
+        > 
+      </form>
+    </div>
+  </div>
+</div>
+<footer class="footer">
+  <div class="footer-content">
+      <div class="row">
+          <div class="col animate__animated animate__fadeInLeft">
+              <div class="img-wrapper">
+                <img src="assets/images/lasu.png" alt="Lasu Debate Logo">
+              </div>
+          </div>
+          <div class="col">
+              <ul class="animate__animated animate__fadeInLeft">
+                  <li><a href="#">VirTual LecTure</router-link></li>
+                  <li><a href="#">Schedule Meeting</router-link></li>
+                  <li><a href="#">Join Meeting</router-link></li>
+              </ul>
+          </div>
+          <div class="col">
+              <div class="social-links">
+                  <a href=""><i class="fa fa-facebook animate__animated animate__bounce"></i></a>
+                  <a href=""><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                  <a href=""><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                  <a href=""><i class="fa fa-envelope" aria-hidden="true"></i> </a>
+              </div>
+          </div>
+          <div class="col">
+              <div class="signup-cta">
+                  <h2>CONTACT US</h2>
+                  <div class="cta-btn">
+                      <button>NOW</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</footer>
+</body>
+</html>
+<script>
+  var loginApp = new Vue({
+    el: '#regApp',
+    data () {
+      return {
+        error: '',
+        baseUrl: 'http://localhost:3000/',
+        successMessage: '',
+        fileIsSelected: false,
+        file_name: 'Upload profile picture',
+        user: {
+          names: '',
+          email: '',
+          type: '',
+          profile_pic: '',
+          password: '',
+          comfirmpass: ''
+        }
+      }
+    },
+    methods: {
+      fileChange (file) {
+        this.user.profile_pic = file
+        const file_name = file[0].name
+        this.fileIsSelected = true
+        this.file_name = file_name
+      },
+      register () {
+        names = this.user.names
+        email = this.user.email
+        type = this.user.type
+        password = this.user.password
+        comfirmpass = this.user.comfirmpass
+        profile_pic = this.user.profile_pic
+
+        if (password === '' || names === '' || email === '') {
+          this.error = 'Please fill out all the fields'
+        } else if (!this.validEmail(email)) {
+          this.error = 'Please provide a valid email address'
+        } else if (password.length < 6) {
+          this.error = 'Your password cannot be less than 6 characters'
+        } else if (password !== comfirmpass) {
+          this.error = 'Password fields does not match'
+        }else if (profile_pic == '') {
+          this.error = 'Please choose a profile picture'
+        } else {
+
+          payload  = new FormData()
+          for (const file of profile_pic) {
+            payload.append('file', file, file.name)
+          }
+
+          payload.append('names', names)
+          payload.append('email', email)
+          payload.append('password', password)
+          payload.append('user_type', type)
+
+          this.error = ''
+          thissuccessMessage =''
+          let url = `${this.baseUrl}register_user`
+          const fetchData  = {
+            method: 'post',
+            body:  payload,
+          }
+    
+          fetch(url, fetchData)
+          .then(resp => {
+              if(resp.ok) {
+                  return resp.json()
+              } else {
+                  return Promise.reject()
+              }
+          })
+          .then(data => {
+            if (data.reply === 'success') {
+              localStorage.setItem('message', JSON.stringify({message: 'Registration successful, Please login'}))
+              self.location = 'login.html'
+            } else {
+              this.error = data.reply
+            }
+          })
+          .catch(error => {
+            console.log(error)
+          })
+        }
+      },
+      validEmail(email) {
+        const regex = /^\S+@\S+\.\S+$/;
+        if(regex.test(email) === false) {
+            return false
+        } else{
+          return true
+        }
+      },
+    }
+  })
+</script>

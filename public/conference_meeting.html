@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vidoe Chat App</title>
+  <link rel="stylesheet" href="assets/css/index.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="main-container">
+    <div class="video-holder">
+      <div class="col-12 col-sm-6 d-flex justify-content-center">
+        <div class="embed-responsive embed-responsive-16by9">
+          <video class="embed-responsive-item" muted></video>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 d-flex justify-content-center">
+        <div id="peerDiv" class="embed-responsive embed-responsive-16by9">
+        </div>
+      </div>
+    </div>
+    <div id="chatApp" class="chat-holder">
+        <main class="main">
+          <li :class="['general']" v-if="generalMsg !== null">{{ generalMsg }} </li>
+          <ul>
+            <li
+              v-for="msg in messages"
+              :class="[msg.sender === user ? 'me' : 'respondent']"
+              > 
+                <strong v-if="msg.sender !== user" class="sender">{{ msg.sender}} <br> </strong>
+                {{ msg.message }} 
+              </li>
+          </ul>
+        </main>
+      <footer>
+        <form  action="" @submit.prevent = "initiateChat" class="msg">
+          <input @keyup="typing($event)" type="text" v-model="msg" name="message" id="message" placeholder="Type a message" autocomplete="off">
+          <button class="send" id="send">
+            <img src="assets/images/send.png" alt="Send">
+          </button>
+        </form>
+      </footer>
+    </div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</body>
+</html>
+
+<script>
+const socket = io()
+const app =  new Vue({
+  el: '#chatApp',
+  data: {
+    msg: 'some messages',
+    messages: [],
+    user: 'Ganiu',
+    generalMsg: null,
+    userTyping: ''
+  },
+  methods: {
+    initiateChat() {
+      this.userTyping = ''
+      socket.emit('finish', this.user)
+      const message = {
+        sender: this.user,
+        message: this.msg
+      }
+      this.messages.push(message)
+      socket.emit('chat', message)
+      this.msg =''
+    },
+    typing(e) {
+      if (e.keyCode !== 13) {
+        socket.emit('typing', this.user)
+      } else {
+        this.userTyping = ''
+        socket.emit('finish', this.user)
+      }
+    }
+  },
+  computed: {
+  },
+  mounted() {
+    socket.on('message', (data) => {
+      this.messages.push(data)
+      this.generalMsg = null
+    })
+
+    socket.on('new', (data) => {
+      this.generalMsg = data
+    })
+
+    socket.on('userTyping', (data) => {
+      this.userTyping = data
+    })
+
+    socket.on('userStoppedTyping', (data) => {
+      this.userTyping = ''
+    })
+  }
+})
+</script>
+
+<style>
+  .me {
+    float: left;
+    border-radius: 0px 10px 10px 0px;
+  }
+  .respondent {
+    float: right;
+    border-radius: 10px 0px 0px 10px;
+  }
+  .sender {
+    color:rgb(255, 46, 151)
+  }
+
+  .general {
+    background-color: khaki;
+    color: rgb(41, 39, 39);
+    list-style-type: none;
+    width: 50%;
+    margin: 0 auto;
+    padding: 5px;
+  }
+
+  .typing {
+    font-size: 10px;
+    color:blanchedalmond
+  }
+</style>

@@ -1,0 +1,245 @@
+* {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box; }
+  
+  html {
+    padding: 0; }
+  
+  .show {
+    display: block !important; }
+  
+  body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 700; }
+  
+  .login {
+    position: absolute;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    top: 0;
+    width: 100%;
+    height: 100%; }
+    .login .main-content {
+      width: 40%;
+      background-color: white;
+      padding: 10px;
+      position: relative;
+      border-radius: 10px;
+      -webkit-box-shadow: 4px 6px 10px black;
+      box-shadow: 4px 6px 10px black; }
+      @media (max-width: 768px) {
+        .login .main-content {
+          border-radius: 0px;
+          padding-top: 50px;
+          -webkit-box-shadow: none;
+          box-shadow: none;
+          width: 100%;
+          height: 100vh; } }
+      .login .main-content h2 {
+        text-align: center;
+        font-size: 1.5rem;
+        width: 80%;
+        margin: 20px auto;
+        color: #474545; }
+      .login .main-content .image {
+        width: 50%;
+        margin: 5px auto; }
+      .login .main-content .form-group {
+        border: 1px solid #5e5e5e;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        width: 80%;
+        margin: 50px auto;
+        padding: 5px 2px;
+        border-radius: 10px; }
+        .login .main-content .form-group img {
+          margin-top: 4px;
+          margin-left: 2px;
+          width: 25px; }
+        .login .main-content .form-group .diffe {
+          margin: 4px; }
+        .login .main-content .form-group input {
+          width: 100%;
+          height: 100%;
+          display: block;
+          padding: 10px 3px;
+          font-size: 14px;
+          outline: none;
+          border: 0;
+          color: #181010;
+          background-color: transparent; }
+      .login .main-content .error {
+        font-size: 0.7rem;
+        color: #e03131;
+        margin: 0px 0px 0px 10%; }
+      .login .main-content .button-holder {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        width: 80%;
+        margin: 50px auto !important;
+        padding: 0px; }
+      .login .main-content .button {
+        outline: none;
+        width: 50%;
+        height: 40px;
+        padding: .5rem 1.5rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        border-radius: 10px;
+        border: 0;
+        color: rgb(228, 222, 222);
+        background-color: rgb(84, 97, 99);
+        cursor: pointer; }
+        .login .main-content .button img {
+          width: 80%;
+          height: 100%; }
+      .login .main-content p {
+        color: #c2b2b2;
+        width: 80%;
+        margin: 75px auto 10px; }
+        @media (max-width: 768px) {
+          .login .main-content p {
+            font-size: .9rem; } }
+        .login .main-content p a {
+          text-decoration: none;
+          color: #180b18;
+          font-weight: 600; }
+
+          .register {
+            position: absolute;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            top: 0;
+            width: 100%;
+            height: 100%; }
+            .register .main-content {
+              border-radius: 10px;
+              width: 40%;
+              background-color: white;
+              padding: 10px;
+              position: relative;
+              -webkit-box-shadow: 4px 6px 10px black;
+              box-shadow: 4px 6px 10px black; }
+              @media (max-width: 768px) {
+                .register .main-content {
+                  -webkit-box-shadow: none;
+                  box-shadow: none;
+                  width: 100%;
+                  border-radius: 0px;
+                  background-color: white;
+                  height: 100vh; } }
+                  .register .main-content h2 {
+                    text-align: center;
+                    font-size: 1.5rem;
+                    width: 80%;
+                    text-align: center;
+                    margin: 20px auto;
+                    color: #474545; }
+              .register .main-content .head {
+                text-align: center;
+                font-size: 1.5rem;
+                width: 80%;
+                margin: 20px auto 50px;
+                color: #474545; }
+              .register .main-content .form-group {
+                border: 1px solid #5e5e5e;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                width: 80%;
+                border-radius: 5px;
+                padding: 1px;
+                margin: 40px auto 5px; }
+                .register .main-content .form-group input::-webkit-input-placeholder {
+                  font-size: 14px;
+                  color: rgba(43, 43, 43, 0.651); }
+                .register .main-content .form-group input:-ms-input-placeholder {
+                  font-size: 14px;
+                  color: rgba(43, 43, 43, 0.651); }
+                .register .main-content .form-group input::-ms-input-placeholder {
+                  font-size: 14px;
+                  color: rgba(43, 43, 43, 0.651); }
+                .register .main-content .form-group input::placeholder {
+                  font-size: 14px;
+                  color: rgba(43, 43, 43, 0.651); }
+                .register .main-content .form-group img {
+                  margin-top: 4px;
+                  margin-left: 2px;
+                  width: 25px; }
+                .register .main-content .form-group .diffe {
+                  margin: 4px; }
+                .register .main-content .form-group input {
+                  width: 100%;
+                  height: 100%;
+                  display: block;
+                  padding: 10px 3px;
+                  font-size: 14px;
+                  outline: none;
+                  border: 0;
+                  color: #181010;
+                  background-color: transparent; }
+              .register .main-content .error {
+                font-size: 0.7rem;
+                color: #e03131;
+                margin: 0px 0px 0px 10%; }
+              .register .main-content .button-holder {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-pack: justify;
+                -ms-flex-pack: justify;
+                justify-content: space-between;
+                width: 80%;
+                margin: 50px auto !important;
+                padding: 0px; }
+              .register .main-content .button {
+                outline: none;
+                width: 50%;
+                height: 40px;
+                padding: .5rem 1.5rem;
+                font-size: 1rem;
+                font-weight: 600;
+                border-radius: 10px;
+                border: 0;
+                color: white;
+                background-color:rgb(84, 97, 99);
+                cursor: pointer; }
+                .register .main-content .button img {
+                  width: 80%;
+                  height: 100%; }
+              .register .main-content p {
+                color: #c2b2b2;
+                width: 80%;
+                margin: 55px auto 10px; }
+                .register .main-content p a {
+                  text-decoration: none;
+                  color: #180b18;
+                  font-weight: 600; }
+                  @media (max-width: 768px) {
+                    .register .main-content p a {
+                      text-decoration: none;
+                      color: #180b18;
+                      font-weight: 600; } }
+          
