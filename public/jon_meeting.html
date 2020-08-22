@@ -34,7 +34,7 @@
       </div>
     </div>
   </nav>
-  <div id="loginApp">
+  <div id="App">
     <div class="login-holder">
       <div class="login">
         <div class="head">
@@ -47,48 +47,31 @@
         <span class="errMsg">
           {{ error }}
         </span>
-        <form action="" method="">
+        <form>
           <div class="form-group">
             <span><i class="fa fa-user-o" aria-hidden="true"></i></span>
             <input 
-              type="text" 
+              type="text"
               autocomplete="off" 
               placeholder="Meeting Title"
               v-model="meeting.title"
-              @keyup.enter="hostMeeting()"
+              @keyup.enter="host_meeting()"
             >
           </div>
           <div class="form-group">
             <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
             <input
-              type="date"
-              placeholder="Meeting Date"
-              v-model="meeting.date"
-              @keyup.enter="hostMeeting()"
-            >
-          </div>
-          <div class="form-group">
-            <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
-            <input
-              type="time"
-              placeholder="From"
-              v-model="meeting.from"
-              @keyup.enter="hostMeeting()"
-            >
-          </div>
-          <div class="form-group">
-            <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
-            <input
-              type="time"
-              placeholder="To"
-              v-model="meeting.to"
-              @keyup.enter="hostMeeting()"
+              type="password"
+              autocomplete="off"
+              placeholder="Password"
+              v-model="user.password"
+              @keyup.enter="tryLogin()"
             >
           </div>
           <input
             type="submit"
-            value="Submit"
-            @click.prevent="hostMeeting()"
+            value="Login"
+            @click.prevent="tryLogin()"
           > 
         </form>
       </div>
@@ -132,121 +115,34 @@
 </html>
 <script>
   var loginApp = new Vue({
-    el: '#loginApp',
+    el: '#App',
     data () {
       return {
         baseUrl: 'http://localhost:3000/',
         error: '',
         successMessage: '',
-        meeting: {
-          title: '',
-          date: '',
-          from: '',
-          to: ''
+        user: {
+          email: '',
+          password: ''
         }
       }
     },
     methods: {
-      formatDate (dueDate) {
-        dateData = dueDate.split('-')
-        const year = dateData[0]
-        const month = dateData[1]
-        const day = dateData[2]
-        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const formattedDate = `${months[month - 1]} ${day}, ${year}`
-        return formattedDate
-      },
-
-      formatTime (time) {
-        let formattedTime
-        const timeArray = time.split(':')
-        let hour = Number(timeArray[0])
-        const min = Number(timeArray[1])
-
-        let new_hour
-        const prompt = {
-          pm: "PM",
-          am: 'AM'
+      joinMeeting () {
+        const message = localStorage.getItem('message')
+        if (message !== null) {
+          const msg = JSON.parse(message)
+          this.successMessage = msg.message
         }
-        if (hour <= 11 || hour === 00) {
-          hour === 00 ? hour = 12 : hour
-          formattedTime = `${hour}:${min} ${prompt.am}`
-        } else {          
-          switch(hour){
-            case 13:
-              new_hour = 01
-              break
-            case 14:
-              new_hour = 02
-              break
-            case 15:
-              new_hour = 03
-              break
-            case 16:
-              new_hour = 04
-              break
-            case 17:
-              new_hour = 05
-              break
-            case 18:
-              new_hour = 06
-              break
-            case 19:
-              new_hour = 07
-              break
-            case 20:
-              new_hour = 08
-              break
-            case 21:
-              new_hour = 09
-              break
-            case 22:
-              new_hour = 10
-              break
-            case 23:
-              new_hour = 11
-              break
-            case 12:
-              new_hour = 12
-          }
-          formattedTime = `${new_hour}:${min} ${prompt.pm}`
-        }
-        return formattedTime
-      },
-
-      hostMeeting () {
-        const title = this.meeting.title
-        const date = this.formatDate(this.meeting.date)
-        const to = this.formatTime(this.meeting.to)
-        const from = this.formatTime(this.meeting.from)
-        const user = localStorage.getItem('user')
-        let current_user
-
-        if (user !== null) {
-          current_user = JSON.parse(user)
-        } else {
-          self.location = 'login.html'
-        }
-
-        if (title === '' || date === '' || to === '' || from === '') {
-          this.error = 'All fields are required'
-        } else {
-          this.error = ''
-          thissuccessMessage =''
-
-          const payload  = new FormData()
-          payload.append('title', title)
-          payload.append('date', date)
-          payload.append('from', from)
-          payload.append('to', to)
-          payload.append('current_user', current_user.user._id)
+          payload.append('email', email)
+          payload.append('password', password)
 
           const fetchData  = {
             method: 'post',
             body:  payload,
           }
 
-          let url = `${this.baseUrl}schedule_meeting`
+          let url = `${this.baseUrl}user_login`
 
           fetch(url, fetchData)
           .then(resp => {
@@ -258,7 +154,8 @@
           })
           .then(data => {
             if (data.reply === 'success') {
-              console.log(data)
+              localStorage.setItem('user', JSON.stringify({user: data.user}))
+              self.location = 'index.html'
             } else {
               this.error = data.reply
             }

@@ -23,5 +23,34 @@ const userModel = new mongoose.Schema({
   }
 })
 
+const meetingModel = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  host: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "users",
+    required: true
+  },
+  status: {
+    type: String,
+    required: true
+  },
+  date: {
+    type: String,
+    required: true
+  },
+  from: {
+    type: String,
+    required: true
+  },
+  to: {
+    type: String,
+    required: true
+  }
+})
+
 
 module.exports.users = mongoose.model('users', userModel)
+module.exports.meetings = mongoose.model('meetings', meetingModel)

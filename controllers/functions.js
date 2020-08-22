@@ -3,7 +3,13 @@ const fs = require('fs')
 const cloudinary = require('cloudinary')
 const Model = require('../model/schema')
 const bcrypt = require('bcryptjs')
-// const shortId = require('shortid')
+
+const baseUrl = 'http://localhost:3000/'
+const MEETING_STATUS = {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  CLOSED: 'CLOSED'
+}
 
 cloudinary.config({ 
   cloud_name: 'djxyqrkmi', 
@@ -103,9 +109,35 @@ module.exports.logout = async (req, resp, next) => {
 }
 
 module.exports.host_meeting = async (req, resp, next) => {
-  resp.status(200).redirect('http://localhost:3000/host_meeting.html')
+  resp.status(200).redirect(`${baseUrl}host_meeting.html`)
+}
+
+module.exports.schedule_meeting = async (req, resp, next) => {
+  const title = req.body.title
+  const host = req.body.current_user
+  const date = req.body.date
+  const from = req.body.from
+  const to = req.body.to
+
+  let newMeeting = new Model.meetings ({
+    title: title,
+    host: host,
+    status: MEETING_STATUS.PENDING,
+    date: date,
+    from: from,
+    to: to
+  })
+
+  await newMeeting.save((err, data) => {
+    if(err) throw err
+    console.log(data)
+    resp.status(200).json({
+      reply: 'success',
+      meeeting: data
+    })                                         
+  })
 }
 
 module.exports.join_meeting = async (req, resp, next) => {
-  resp.status(200).redirect('http://localhost:3000/join_meeting.html')
+  resp.status(200).redirect(`${baseUrl}join_meeting.html`)
 }
