@@ -34,44 +34,30 @@
       </div>
     </div>
   </nav>
-  <div id="App">
+  <div id="loginApp">
     <div class="login-holder">
       <div class="login">
         <div class="head">
-          <h3>LogIn</h3>
-          <a href="register.html">Sign Up</a>
+          <h3>Join Meeting</h3>
         </div>
-        <span class="successMsg">
-          {{ successMessage }}     
-        </span>
         <span class="errMsg">
           {{ error }}
         </span>
         <form>
           <div class="form-group">
-            <span><i class="fa fa-user-o" aria-hidden="true"></i></span>
+            <span><i class="fa fa-hashtag" aria-hidden="true"></i></span>
             <input 
               type="text"
               autocomplete="off" 
-              placeholder="Meeting Title"
-              v-model="meeting.title"
+              placeholder="Meeting ID"
+              v-model="meeting.id"
               @keyup.enter="host_meeting()"
-            >
-          </div>
-          <div class="form-group">
-            <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
-            <input
-              type="password"
-              autocomplete="off"
-              placeholder="Password"
-              v-model="user.password"
-              @keyup.enter="tryLogin()"
             >
           </div>
           <input
             type="submit"
-            value="Login"
-            @click.prevent="tryLogin()"
+            value="Join"
+            @click.prevent="joinMeeting()"
           > 
         </form>
       </div>
@@ -115,47 +101,42 @@
 </html>
 <script>
   var loginApp = new Vue({
-    el: '#App',
+    el: '#loginApp',
     data () {
       return {
         baseUrl: 'http://localhost:3000/',
         error: '',
         successMessage: '',
-        user: {
-          email: '',
-          password: ''
+        meeting: {
+          id: ''
         }
       }
     },
     methods: {
       joinMeeting () {
-        const message = localStorage.getItem('message')
-        if (message !== null) {
-          const msg = JSON.parse(message)
-          this.successMessage = msg.message
-        }
-          payload.append('email', email)
-          payload.append('password', password)
-
-          const fetchData  = {
-            method: 'post',
-            body:  payload,
+        const meeting_id = this.meeting.id
+        if (meeting_id === '') {
+          this.error = 'Please input the meeting ID'
+        } else {
+          const user = localStorage.getItem('user')
+          let current_user
+          if(user !== null) {
+            current_user = JSON.parse(user)
           }
 
-          let url = `${this.baseUrl}user_login`
+          let url = `${this.baseUrl}join_meeting_by_id/${meeting_id}/${current_user.user._id}`
 
-          fetch(url, fetchData)
+          fetch(url)
           .then(resp => {
               if(resp.ok) {
-                  return resp.json()
+                return resp.json()
               } else {
-                  return Promise.reject()
+                return Promise.reject()
               }
-          })
+            })
           .then(data => {
             if (data.reply === 'success') {
-              localStorage.setItem('user', JSON.stringify({user: data.user}))
-              self.location = 'index.html'
+             console.log(data)
             } else {
               this.error = data.reply
             }
@@ -166,7 +147,12 @@
         }
       }
     },
-    mounted() {
+    
+    created() {
+      const user = localStorage.getItem('user')
+      if (user == null) {
+        self.location = 'login.html'
+      }
     }
   })
 </script>

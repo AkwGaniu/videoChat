@@ -3,6 +3,7 @@ const fs = require('fs')
 const cloudinary = require('cloudinary')
 const Model = require('../model/schema')
 const bcrypt = require('bcryptjs')
+const shortid = require('shortid')
 
 const baseUrl = 'http://localhost:3000/'
 const MEETING_STATUS = {
@@ -118,8 +119,10 @@ module.exports.schedule_meeting = async (req, resp, next) => {
   const date = req.body.date
   const from = req.body.from
   const to = req.body.to
+  const meeting_id = shortid.generate()
 
   let newMeeting = new Model.meetings ({
+    meeting_id: meeting_id,
     title: title,
     host: host,
     status: MEETING_STATUS.PENDING,
@@ -128,16 +131,61 @@ module.exports.schedule_meeting = async (req, resp, next) => {
     to: to
   })
 
-  await newMeeting.save((err, data) => {
+  await newMeeting.save( async (err, data) => {
     if(err) throw err
-    console.log(data)
+    const host_name = await Model.users.findOne({_id: data.host})
     resp.status(200).json({
       reply: 'success',
-      meeeting: data
+      meeting: data,
+      hostName: host_name.names
     })                                         
   })
 }
 
 module.exports.join_meeting = async (req, resp, next) => {
   resp.status(200).redirect(`${baseUrl}join_meeting.html`)
+}
+
+module.exports.join_meeting_by_id = async (req, resp, next) => {
+  const id = req.params.id
+  const user = req.params.user
+  
+  try {
+    const meeting = await Model.meetings.findOne({meeting_id: id})
+    if (meeting) {
+      if (meeting.host == user) {
+        await Model.meetings
+        .findOneAndUpdate(
+          {meeting_id: meeting.meeting_id},
+          {status: MEETING_STATUS.IN_PROGRESS},
+          {new: true}, async (err, data) => {
+            if (err) next(err)
+
+            const recipient = await Model.users.findOne({_id: user})
+            resp.status(200).json({
+              reply: 'success',
+              meeting: data,
+              recipient: recipient
+            })
+        }).catch((error) => {
+          next(err)
+        })
+      } else {
+        const recipient = await Model.users.findOne({_id: user})
+        resp.status(200).json({
+          reply: 'success',
+          meeting: meeting,
+          recipient: recipient
+        })
+      }
+    } else {
+      resp.status(200).json({
+        reply: "Oops, Invalid meeting ID"
+      })
+    }
+  } catch (error) {
+    console.log(error)
+    next(error)
+  }
+  // resp.status(200).redirect(`${baseUrl}join_meeting.html`)
 }

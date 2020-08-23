@@ -172,22 +172,24 @@ body{
 
 #loginApp, #regApp {
   .login-holder {
-    // height: 94.8vh;
-    width: 100%; 
-    padding: 50px 20px; 
+    width: 100%;
+    padding: 50px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    
+    @media (max-width: 768px) {
+      width: 100%;
+      padding: 30px 5px;
+    }
     .login {
-      width: 35%;
-      border-radius: 20px;
+      width: 50%;
+      border-radius: 5px;
       padding: 20px;
-      background-color: #fffafa;
-      box-shadow: 2px 2px 4px black;
+      // background-color: #fffafa;
+      // box-shadow: 2px 2px 4px black;
       @media (max-width: 768px) {
         width: 100%;
-        margin: 0px auto;
+        padding: 0px;
       }
 
       .head {
@@ -300,6 +302,31 @@ body{
 }
 // End of LoginApp and RegApp
 
+.meeting-details {
+  padding: 20px 0px 0px;
+  p {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+   
+    .left {
+      width: 25%;
+      color: rgb(190, 189, 189);
+      @media (max-width: 768px) {
+        font-size: 12px;
+      }
+    }
 
+    .right {
+      width: 75%;
+      color: rgb(34, 33, 33);
+      font-size: 15px;
+      @media (max-width: 768px) {
+        font-size: 12px;
+      }
+
+    }
+  }
+}
 
 

@@ -38,8 +38,7 @@
     <div class="login-holder">
       <div class="login">
         <div class="head">
-          <h3>LogIn</h3>
-          <a href="register.html">Sign Up</a>
+          <h3>Schedule Meeting</h3>
         </div>
         <span class="successMsg">
           {{ successMessage }}     
@@ -47,9 +46,11 @@
         <span class="errMsg">
           {{ error }}
         </span>
-        <form action="" method="">
+        <form
+          v-if="!response.status"
+        >
           <div class="form-group">
-            <span><i class="fa fa-user-o" aria-hidden="true"></i></span>
+            <label for="title">Title:</label>
             <input 
               type="text" 
               autocomplete="off" 
@@ -59,7 +60,7 @@
             >
           </div>
           <div class="form-group">
-            <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
+            <label for="date">Date:</label>
             <input
               type="date"
               placeholder="Meeting Date"
@@ -68,7 +69,7 @@
             >
           </div>
           <div class="form-group">
-            <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
+            <label for="from">From:</label>
             <input
               type="time"
               placeholder="From"
@@ -77,7 +78,7 @@
             >
           </div>
           <div class="form-group">
-            <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
+            <label for="to">To:</label>
             <input
               type="time"
               placeholder="To"
@@ -91,6 +92,39 @@
             @click.prevent="hostMeeting()"
           > 
         </form>
+        <div 
+          class="meeting-details"
+          v-else
+        >
+        <p> 
+          <span class="left">Meeting Title: </span>
+          <span class="right">{{ response.data.title}}</span> 
+        </p>
+        <p> 
+          <span class="left">Meeting Id: </span>
+          <span class="right">{{ response.data.meeting_id}}</span>
+        </p>
+        <p>
+          <span class="left">Meeting Link:</span>
+          <span class="right"> {{ baseUrl}}{{response.data.meeting_id}} </span>
+        </p>
+        <p>
+          <span class="left">Host: </span>
+          <span class="right">{{ response.host }}</span>
+        </p>
+        <p>
+          <span class="left">Meeting Date: </span>
+          <span class="right">{{ response.data.date }}</span>
+        </p>
+        <p>
+          <span class="left">Start Time: </span>
+          <span class="right">{{ response.data.from }}</span>
+        </p>
+        <p>
+          <span class="left">Meeting Ends: </span>
+          <span class="right">{{ response.data.to }}</span>
+        </p>
+      </div>
       </div>
     </div>
   </div>
@@ -138,6 +172,11 @@
         baseUrl: 'http://localhost:3000/',
         error: '',
         successMessage: '',
+        response: {
+          status: false,
+          data: {},
+          host: ''
+        },
         meeting: {
           title: '',
           date: '',
@@ -220,13 +259,7 @@
         const to = this.formatTime(this.meeting.to)
         const from = this.formatTime(this.meeting.from)
         const user = localStorage.getItem('user')
-        let current_user
-
-        if (user !== null) {
-          current_user = JSON.parse(user)
-        } else {
-          self.location = 'login.html'
-        }
+        let current_user = JSON.parse(user)
 
         if (title === '' || date === '' || to === '' || from === '') {
           this.error = 'All fields are required'
@@ -251,14 +284,17 @@
           fetch(url, fetchData)
           .then(resp => {
               if(resp.ok) {
-                  return resp.json()
+                return resp.json()
               } else {
-                  return Promise.reject()
+                return Promise.reject()
               }
           })
           .then(data => {
             if (data.reply === 'success') {
-              console.log(data)
+              this.response.status = true
+              this.successMessage = 'Meeting scheduled successfully, find meeting details below'
+              this.response.data = data.meeting
+              this.response.host = data.hostName
             } else {
               this.error = data.reply
             }
@@ -269,7 +305,11 @@
         }
       }
     },
-    mounted() {
+    created() {
+      const user = localStorage.getItem('user')
+        if (user == null) {
+          self.location = 'login.html'
+        }
     }
   })
 </script>

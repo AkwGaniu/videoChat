@@ -242,19 +242,23 @@ body {
   align-items: center;
 }
 
+@media (max-width: 768px) {
+  #loginApp .login-holder, #regApp .login-holder {
+    width: 100%;
+    padding: 30px 5px;
+  }
+}
+
 #loginApp .login-holder .login, #regApp .login-holder .login {
-  width: 35%;
-  border-radius: 20px;
+  width: 50%;
+  border-radius: 5px;
   padding: 20px;
-  background-color: #fffafa;
-  -webkit-box-shadow: 2px 2px 4px black;
-  box-shadow: 2px 2px 4px black;
 }
 
 @media (max-width: 768px) {
   #loginApp .login-holder .login, #regApp .login-holder .login {
     width: 100%;
-    margin: 0px auto;
+    padding: 0px;
   }
 }
 
@@ -399,4 +403,41 @@ body {
   width: 100%;
   top: 5px;
   cursor: pointer;
+}
+
+.meeting-details {
+  padding: 20px 0px 0px;
+}
+
+.meeting-details p {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.meeting-details p .left {
+  width: 25%;
+  color: #bebdbd;
+}
+
+@media (max-width: 768px) {
+  .meeting-details p .left {
+    font-size: 12px;
+  }
+}
+
+.meeting-details p .right {
+  width: 75%;
+  color: #222121;
+  font-size: 15px;
+}
+
+@media (max-width: 768px) {
+  .meeting-details p .right {
+    font-size: 12px;
+  }
 }
