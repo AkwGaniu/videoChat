@@ -27,6 +27,18 @@ mongoose.connect(process.env.DB_CONNECT, {useNewUrlParser: true, useUnifiedTopol
   console.log("We are connected")
 })
 
+app.use((req, resp, next) => {
+  resp.header('Access-Control-Allow-Origin', '*')
+  resp.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE')
+  resp.header('Access-Control-Allow-headers', 'Content-type, Accept, x-access-token, x-key')
+
+  if(req.method === 'OPTIONS') {
+      resp.status(200).end()
+  } else {
+      next()
+  }
+})
+
 app.use('/', routes)
 
 app.use(express.static(__dirname + "/public"))
