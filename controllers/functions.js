@@ -5,7 +5,7 @@ const Model = require('../model/schema')
 const bcrypt = require('bcryptjs')
 const shortid = require('shortid')
 
-const baseUrl = 'http://localhost:3000/'
+const baseUrl = 'https://vidyochatt.herokuapp.com/'
 const MEETING_STATUS = {
   PENDING: 'PENDING',
   IN_PROGRESS: 'IN_PROGRESS',
@@ -83,7 +83,7 @@ module.exports.login = async (req, resp, next) => {
     if (!validPassword) return resp.status(200).json({reply: "Invalid passsword"})
     resp.status(200).json({
       reply: 'success',
-      user: user
+      user: user._id
     })
   } catch (error) {
     next(error)
@@ -154,24 +154,38 @@ module.exports.join_meeting_by_id = async (req, resp, next) => {
     const meeting = await Model.meetings.findOne({meeting_id: id})
     if (meeting) {
       if (meeting.host == user) {
-        await Model.meetings
-        .findOneAndUpdate(
-          {meeting_id: meeting.meeting_id},
-          {status: MEETING_STATUS.IN_PROGRESS},
-          {new: true}, async (err, data) => {
-            if (err) next(err)
+        if (meeting.status === 'CLOSED') {
+          resp.status(200).json({
+            reply: "The meeting is over"
+          })
+        } else {
+          await Model.meetings
+          .findOneAndUpdate(
+            {meeting_id: meeting.meeting_id},
+            {status: MEETING_STATUS.IN_PROGRESS},
+            {new: true}, async (err, data) => {
+              if (err) next(err)
 
-            const recipient = await Model.users.findOne({_id: user})
-            resp.status(200).json({
-              reply: 'success',
-              meeting: data,
-              recipient: recipient
-            })
-        }).catch((error) => {
-          next(err)
+              const recipient = await Model.users.findOne({_id: user}, {password: false})
+              resp.status(200).json({
+                reply: 'success',
+                meeting: data,
+                recipient: recipient
+              })
+          }).catch((error) => {
+            next(err)
+          })
+        }
+      } else if (meeting.status === 'PENDING') {
+        resp.status(200).json({
+          reply: "The meeting host is yet to start the meeting, Please check back"
+        })
+      } else if (meeting.status === 'CLOSED') {
+        resp.status(200).json({
+          reply: "The meeting is over"
         })
       } else {
-        const recipient = await Model.users.findOne({_id: user})
+        const recipient = await Model.users.findOne({_id: user}, {password: false})
         resp.status(200).json({
           reply: 'success',
           meeting: meeting,
@@ -187,5 +201,4 @@ module.exports.join_meeting_by_id = async (req, resp, next) => {
     console.log(error)
     next(error)
   }
-  // resp.status(200).redirect(`${baseUrl}join_meeting.html`)
 }

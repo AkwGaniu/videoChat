@@ -169,7 +169,7 @@
     el: '#loginApp',
     data () {
       return {
-        baseUrl: 'http://localhost:3000/',
+        baseUrl: 'https://vidyochatt.herokuapp.com/',
         error: '',
         successMessage: '',
         response: {
@@ -272,7 +272,7 @@
           payload.append('date', date)
           payload.append('from', from)
           payload.append('to', to)
-          payload.append('current_user', current_user.user._id)
+          payload.append('current_user', current_user.user)
 
           const fetchData  = {
             method: 'post',

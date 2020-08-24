@@ -21,14 +21,81 @@ body{
     width: 70%;
     background-color: rgb(88, 86, 86);
   }
-  
+
   .chat-holder {
     width: 30%;
+
+    .tab-btns {
+      width: 100%;
+      display: flex;
+      .participant-btn {
+        width: 50%;
+        .account-tab {
+          border: 0;
+          border-right: 2px solid #f3f6f7;
+        }
+      }
+      .chat-room-btn {
+        width: 50%;
+        .client-tab {
+          border: 0;
+          border-left: 2px solid #f3f6f7;
+        }
+      }
+      button {
+        outline: none;
+        padding: 10px;
+        width: 100%;
+        font-size: medium;
+        font-weight: 500;
+        letter-spacing: 2px;
+        color: #2f2519;
+        background-color: #a4c5c6;
+        @media (max-width: 768px) {
+          padding: 5px;
+          letter-spacing: 0;
+        }        
+      }
+      button:hover {
+        background-color: #035aa6;
+        border-color: #035aa6;
+        color: whitesmoke;
+      }
+    }
+    .participants {
+      width: 100%;
+      .user-details {
+        color: rgb(90, 89, 88);
+        padding: 10px 10px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        border-bottom: 1px solid rgb(221, 219, 219);
+  
+        .user-avartar {
+          width: 45px;
+          img{
+            border-radius: 50%;
+            width: 100%;
+          }
+        }
+        .user {
+          position: relative;
+          p {
+            margin: 10px 10px;
+            padding: 0px 5px;
+            span {
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
     .main {
       width: 100%;
       margin: 0;
       padding: 0;
-      height: 93.2vh;
+      height: 85.4vh;
       overflow-y: scroll;
       @media (max-width: 768px) {
         width: 100%;
@@ -41,8 +108,8 @@ body{
           margin: 10px 2px;
           width: 60%;
           padding: 5px;
-          color: rgb(208, 214, 213);
-          background-color: rgb(67, 70, 70);
+          color: rgb(60, 61, 61);
+          background-color: rgb(252, 252, 252);
         }
       }
     }

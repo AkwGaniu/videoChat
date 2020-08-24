@@ -55,6 +55,31 @@ const meetingModel = new mongoose.Schema({
   }
 })
 
+const participantsModel = new mongoose.Schema({
+  meeting_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "meetings",
+    required: true
+  },
+  participant: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "users",
+    required: true
+  }
+})
+
+const messagesModel = new mongoose.Schema({
+  meeting_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "meetings",
+    required: true
+  },
+  messages: {
+    type: Array,
+  }
+})
 
 module.exports.users = mongoose.model('users', userModel)
 module.exports.meetings = mongoose.model('meetings', meetingModel)
+module.exports.participants = mongoose.model('participants', participantsModel)
+module.exports.messages = mongoose.model('messages', messagesModel)

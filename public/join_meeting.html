@@ -104,7 +104,7 @@
     el: '#loginApp',
     data () {
       return {
-        baseUrl: 'http://localhost:3000/',
+        baseUrl: 'https://vidyochatt.herokuapp.com/',
         error: '',
         successMessage: '',
         meeting: {
@@ -114,6 +114,7 @@
     },
     methods: {
       joinMeeting () {
+        this.error = ''
         const meeting_id = this.meeting.id
         if (meeting_id === '') {
           this.error = 'Please input the meeting ID'
@@ -124,7 +125,7 @@
             current_user = JSON.parse(user)
           }
 
-          let url = `${this.baseUrl}join_meeting_by_id/${meeting_id}/${current_user.user._id}`
+          let url = `${this.baseUrl}join_meeting_by_id/${meeting_id}/${current_user.user}`
 
           fetch(url)
           .then(resp => {
@@ -136,7 +137,8 @@
             })
           .then(data => {
             if (data.reply === 'success') {
-             console.log(data)
+              localStorage.setItem('meeting', JSON.stringify(data))
+              self.location = 'conference_meeting.html'
             } else {
               this.error = data.reply
             }

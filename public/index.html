@@ -126,10 +126,10 @@
     el: '#App',
     data () {
       return {
-        baseUrl: 'http://localhost:3000',
+        baseUrl: 'https://vidyochatt.herokuapp.com/',
         loggedIn: false,
-        host_meeting: 'http://localhost:3000/login.html',
-        join_meeting: 'http://localhost:3000/login.html'
+        host_meeting: 'https://vidyochatt.herokuapp.com/login.html',
+        join_meeting: 'https://vidyochatt.herokuapp.com/login.html'
       }
     },
     methods: {
@@ -140,8 +140,8 @@
         const current_user = JSON.parse(user)
         if (current_user) {
           this.loggedIn = true
-          this.host_meeting = 'http://localhost:3000/host_meeting'
-          this.join_meeting = 'http://localhost:3000/join_meeting'
+          this.host_meeting = `${this.baseUrl}host_meeting`
+          this.join_meeting = `${this.baseUrl}join_meeting`
         }
       }
     }

@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 
 
 const routes  = require('./router/routes')
+const ioFuctions  = require('./controllers/ioFunctions')
 
 // app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,7 +23,7 @@ app.use(upload_file())
 dotenv.config()
 
 //DATABASE CONNECTION
-mongoose.connect(process.env.DB_CONNECT, {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
+mongoose.connect(process.env.DB_CONNECT, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false}, (err) => {
   if(err) return console.log(`Error: ${err}`)
   console.log("We are connected")
 })
@@ -57,15 +58,15 @@ io.on('connection', function (socket) {
     clients++
   })
 
-  socket.on('offer', sendOffer)
-  socket.on('answer', sendAnser)
+  socket.on('offer', ioFuctions.sendOffer)
+  socket.on('answer', ioFuctions.sendAnser)
   socket.on('disconnect', Disconnect)
 
 
   // CHATTING FUNCTIONALITIES
-  socket.on('chat', (msg) =>{
-    socket.broadcast.emit('message', msg)
-  })
+  socket.on('newUser', ioFuctions.sendNewUser)
+
+  socket.on('chat', ioFuctions.broadcastMsg)
 
   socket.on('typing', (user) => {
     socket.broadcast.emit('userTyping', `${user} is typing...`)
@@ -76,19 +77,11 @@ io.on('connection', function (socket) {
   })
 })
 
-function Disconnect() {
+function Disconnect () {
   if (clients > 0) {
     clients--
     this.broadcast.emit('removeVideo')
   }
-}
-
-function sendOffer(offer) {
-  this.broadcast.emit('backOffer', offer)
-}
-
-function sendAnser(data) {
-  this.broadcast.emit('backAnswer', offer)
 }
 
 //Custom Error Handler middleware
