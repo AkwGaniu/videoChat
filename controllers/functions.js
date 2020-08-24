@@ -5,7 +5,7 @@ const Model = require('../model/schema')
 const bcrypt = require('bcryptjs')
 const shortid = require('shortid')
 
-const baseUrl = 'http://localhost:3000/'
+const baseUrl = 'https://vidyochatt.herokuapp.com/'
 const MEETING_STATUS = {
   PENDING: 'PENDING',
   IN_PROGRESS: 'IN_PROGRESS',
