@@ -23,6 +23,34 @@
         Leave
       </button>
     </div>
+    <div class="mobile-nav">
+      <section class="tab-btns">
+        <div class="video-btn">
+          <button
+            :class="[{mobileActiveTab: nav.video},'account-tab']"
+            @click="toggleNav('video')"
+          >
+            Video Room
+          </button>
+        </div>
+        <div class="participant-btn">
+          <button
+            :class="[{mobileActiveTab: nav.participants},'account-tab']"
+            @click="toggleNav('participant')"
+          >
+            Participants
+          </button>
+        </div>
+        <div class="chat-room-btn">
+          <button
+            :class="[{mobileActiveTab: nav.chat},'client-tab']"
+            @click="toggleNav('chat')"
+          >
+            Chat Room
+          </button>
+        </div>
+      </section>
+    </div>
     <div class="main-container">
       <div
         class="video-holder"
@@ -109,34 +137,6 @@
           </footer>
         </div>
       </div>
-    </div>
-    <div class="mobile-nav">
-      <section class="tab-btns">
-        <div class="video-btn">
-          <button
-            :class="[{mobileActiveTab: nav.video},'account-tab']"
-            @click="toggleNav('video')"
-          >
-            Video Room
-          </button>
-        </div>
-        <div class="participant-btn">
-          <button
-            :class="[{mobileActiveTab: nav.participants},'account-tab']"
-            @click="toggleNav('participant')"
-          >
-            Participants
-          </button>
-        </div>
-        <div class="chat-room-btn">
-          <button
-            :class="[{mobileActiveTab: nav.chat},'client-tab']"
-            @click="toggleNav('chat')"
-          >
-            Chat Room
-          </button>
-        </div>
-      </section>
     </div>
   </div>
   <script src="/socket.io/socket.io.js"></script>
