@@ -27,7 +27,7 @@
       <section class="tab-btns">
         <div class="video-btn">
           <button
-            :class="[{mobileActiveTab: nav.video},'account-tab']"
+            :class="[{ActiveTab: nav.video},'account-tab']"
             @click="toggleNav('video')"
           >
             Video Room
@@ -35,7 +35,7 @@
         </div>
         <div class="participant-btn">
           <button
-            :class="[{mobileActiveTab: nav.participants},'account-tab']"
+            :class="[{ActiveTab: nav.participants},'account-tab']"
             @click="toggleNav('participant')"
           >
             Participants
@@ -43,7 +43,7 @@
         </div>
         <div class="chat-room-btn">
           <button
-            :class="[{mobileActiveTab: nav.chat},'client-tab']"
+            :class="[{ActiveTab: nav.chat},'client-tab']"
             @click="toggleNav('chat')"
           >
             Chat Room
@@ -151,8 +151,6 @@ const app =  new Vue({
   data: {
     baseUrl: 'https://vidyochatt.herokuapp.com/',
     meeting: {},
-    EndMeeting: 'End Meeting',
-    leave: 'Leave',
     msg: '',
     messages: [],
     participants: [],
