@@ -1,7 +1,6 @@
 let Peer = require('simple-peer')
 let socket = io()
 const video = document.querySelector('video')
-
 let client = {}
 const constraintObj = {video: true, audio: true}
 
@@ -28,6 +27,11 @@ if (navigator.mediaDevices === undefined) {
   })
 }
 
+if (navigator.mediaDevices.getUserMedia) {
+  alert('yooo')
+} else {
+  alert('yyyyyyy')
+}
 //GET VIDEO STREAM
 navigator.mediaDevices.getUserMedia(constraintObj)
 .then( function (stream){
@@ -44,7 +48,6 @@ navigator.mediaDevices.getUserMedia(constraintObj)
     let peer = new Peer({initiator: (type == 'init') ? true : false, stream: stream, trickle: false})
     setTimeout(() => {
       peer.on('stream', function (stream) {
-        alert("hi inside onStreamPeer")
         createVideo(stream)
       })  
       peer.on('close', function() {
@@ -114,4 +117,4 @@ navigator.mediaDevices.getUserMedia(constraintObj)
   socket.on('createPeer', makePeer)
   socket.on('removeVideo', removeVideo)    
 })
-.catch(err => document.write(err))
+.catch(err => console.log(err))
