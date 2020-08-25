@@ -8,80 +8,135 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-  <div class="main-container">
-    <div class="video-holder">
-      <div class="col-12 col-sm-6 d-flex justify-content-center">
-        <div class="embed-responsive embed-responsive-16by9">
-          <video class="embed-responsive-item" muted></video>
+  <div id="App" class="meeting-room">
+    <div class="end-meeting">
+      <button
+        @click=""
+        v-if="meeting.meeting.host == meeting.recipient._id"
+      >
+        End Meeting
+      </button>
+      <button
+        @click=""
+        v-else
+      >
+        Leave
+      </button>
+    </div>
+    <div class="main-container">
+      <div
+        class="video-holder"
+        v-if="nav.video"
+      >
+        <div class="col-12 col-sm-6 d-flex justify-content-center">
+          <div class="embed-responsive embed-responsive-16by9">
+            <video class="embed-responsive-item" muted></video>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 d-flex justify-content-center">
+          <div id="peerDiv" class="embed-responsive embed-responsive-16by9">
+          </div>
         </div>
       </div>
-      <div class="col-12 col-sm-6 d-flex justify-content-center">
-        <div id="peerDiv" class="embed-responsive embed-responsive-16by9">
+      <div 
+        id="chatApp"
+        :class="[{blockDisplay: nav.chat || nav.participants}, 'chat-holder']"
+      >
+        <section
+          class="tab-btns"
+          v-if="!nav.chat && !nav.participants"
+        >
+          <div class="participant-btn">
+            <button
+              :class="[{activeTab: showParticipants},'account-tab']"
+              @click="showParticipants=true"
+            >
+              Participants
+            </button>
+          </div>
+          <div class="chat-room-btn">
+            <button
+              :class="[{activeTab: !showParticipants},'client-tab']"
+              @click="showParticipants=false"
+            >
+            Chat Room
+            </button>
+          </div>
+        </section>
+        <div 
+          class="participants"
+          v-if="showParticipants || nav.participants"
+        >
+        <div
+          class="user-details"
+          v-for="user in participants"
+        >
+          <div class="user-avartar">
+            <img 
+              :src="user.user_profile_image_path"
+              alt="User"
+            >
+          </div>
+          <div class="user">
+          <p>
+            {{ user.names }}
+          </p>
+          </div>
+        </div>
+        </div>
+        <div
+          class="chat-room"
+          v-if="!showParticipants || nav.chat"
+        >
+          <main class="main">
+            <ul>
+              <li
+                v-for="msg in messages"
+                :class="[msg.sender === user ? 'me' : 'respondent']"
+                >
+                  <strong v-if="msg.sender !== user" class="sender">{{ msg.sender}} <br> </strong>
+                  {{ msg.message }} 
+                </li>
+            </ul>
+          </main>
+          <footer>
+            <form @submit.prevent = "initiateChat" class="msg">
+              <input @keyup="typing($event)" type="text" v-model="msg" name="message" id="message" placeholder="Type a message" autocomplete="off">
+              <button class="send" id="send">
+                <img src="assets/images/send.png" alt="Send">
+              </button>
+            </form>
+          </footer>
         </div>
       </div>
     </div>
-    <div id="chatApp" class="chat-holder">
+    <div class="mobile-nav">
       <section class="tab-btns">
+        <div class="video-btn">
+          <button
+            :class="[{mobileActiveTab: nav.video},'account-tab']"
+            @click="toggleNav('video')"
+          >
+            Video Room
+          </button>
+        </div>
         <div class="participant-btn">
           <button
-            :class="[{activeTab: showParticipants},'account-tab']"
-            @click="showParticipants=true"
-          >Participants</button>
+            :class="[{mobileActiveTab: nav.participants},'account-tab']"
+            @click="toggleNav('participant')"
+          >
+            Participants
+          </button>
         </div>
         <div class="chat-room-btn">
           <button
-            :class="[{activeTab: !showParticipants},'client-tab']"
-            @click="showParticipants=false"
+            :class="[{mobileActiveTab: nav.chat},'client-tab']"
+            @click="toggleNav('chat')"
           >
-          Chat Room
+            Chat Room
           </button>
         </div>
       </section>
-      <div 
-        class="participants"
-        v-if="showParticipants"
-      >
-      <div
-        class="user-details"
-        v-for="user in participants"
-      >
-        <div class="user-avartar">
-          <img 
-            :src="user.user_profile_image_path"
-            alt="User"
-          >
-        </div>
-        <div class="user">
-        <p>
-          {{ user.names }}
-        </p>
-        </div>
-      </div>
-      </div>
-      <div
-        class="chat-room"
-        v-if="!showParticipants"
-      >
-        <main class="main">
-          <ul>
-            <li
-              v-for="msg in messages"
-              :class="[msg.sender === user ? 'me' : 'respondent']"
-              > 
-                <strong v-if="msg.sender !== user" class="sender">{{ msg.sender}} <br> </strong>
-                {{ msg.message }} 
-              </li>
-          </ul>
-        </main>
-        <footer>
-          <form @submit.prevent = "initiateChat" class="msg">
-            <input @keyup="typing($event)" type="text" v-model="msg" name="message" id="message" placeholder="Type a message" autocomplete="off">
-            <button class="send" id="send">
-              <img src="assets/images/send.png" alt="Send">
-            </button>
-          </form>
-        </footer>
-      </div>
     </div>
   </div>
   <script src="/socket.io/socket.io.js"></script>
@@ -92,19 +147,44 @@
 <script>
 const socket = io()
 const app =  new Vue({
-  el: '#chatApp',
+  el: '#App',
   data: {
     baseUrl: 'https://vidyochatt.herokuapp.com/',
     meeting: {},
+    EndMeeting: 'End Meeting',
+    leave: 'Leave',
     msg: '',
     messages: [],
     participants: [],
     user: '',
     generalMsg: null,
     userTyping: '',
-    showParticipants: true
+    showParticipants: true,
+    nav: {
+      video: true,
+      participants: false,
+      chat: false
+    }
   },
   methods: {
+    toggleNav (view) {
+      if (view === 'video') {
+        this.nav.video = true
+        this.nav.participants = false
+        this.nav.chat = false
+      } else if (view === 'participant') {
+        this.nav.video = false
+        this.nav.participants = true
+        this.nav.chat = false
+        this.showParticipants = true
+      } else if (view === 'chat') {
+        this.nav.video = false
+        this.nav.participants = false
+        this.nav.chat = true
+        this.showParticipants = false
+      }
+    },
+
     newUser () {
       socket.emit('newUser', this.meeting)
     },
@@ -169,6 +249,9 @@ const app =  new Vue({
 </script>
 
 <style>
+  .blockDisplay {
+    display: block !important;
+  }
   .me {
     float: left;
     border-radius: 0px 10px 10px 0px;
@@ -186,5 +269,8 @@ const app =  new Vue({
   }
   .activeTab {
     border-bottom: 4px solid rgba(144, 197, 144, 0.849) !important;
+  }
+  .mobileActiveTab {
+    border-top: 4px solid rgba(144, 197, 144, 0.849) !important;
   }
 </style>
