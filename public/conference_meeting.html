@@ -209,12 +209,9 @@ const app =  new Vue({
       }
     }
   },
-  computed: {
-  },
   mounted() {
     socket.on('message', (data) => {
       this.messages = data
-      console.log(data)
     })
 
     socket.on('userTyping', (data) => {

@@ -8200,11 +8200,7 @@ if (navigator.mediaDevices === undefined) {
   })
 }
 
-if (navigator.mediaDevices.getUserMedia) {
-  alert('yooo')
-} else {
-  alert('yyyyyyy')
-}
+console.log(video)
 //GET VIDEO STREAM
 navigator.mediaDevices.getUserMedia(constraintObj)
 .then( function (stream){
