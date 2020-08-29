@@ -31,8 +31,9 @@ if (navigator.mediaDevices === undefined) {
 //GET VIDEO STREAM
 navigator.mediaDevices.getUserMedia(constraintObj).then( function (stream){
   // socket.emit('newClient')
+  alert('i got here')
   if ('srcObject' in video) {
-    console.log(stream)
+    alert(stream)
     video.srcObject = stream
     console.log(video)
   } else { 
