@@ -39,7 +39,7 @@
           class="form-inline my-2 my-lg-0"
           v-else
         >
-          <a href="logout" class="btn btn-outline-secondary my-2 mr-4 my-sm-0">Sign Out</a>
+          <button @click="logout" class="btn btn-outline-secondary my-2 mr-4 my-sm-0">Sign Out</button>
         </div>
       </div>
     </nav>
@@ -118,6 +118,46 @@
           </div>
       </div>
     </footer>
+
+    <!-- FEEDBACK MODAL -->
+    <div
+    :class="[{showModalClass: showFeedbackForm}, 'add-record-modal']"
+    >
+      <div
+      class="modal-content accouunt-entry"
+      >
+        <header>
+          <h2>
+            FEEDBACK
+          </h2>
+          <span
+            @click="closeModal()"
+          >+</span>
+        </header>
+        <main>
+          <p>Hope that was cool? <br> Share your feedback to better improve the experience</p>
+          <form action="#">
+            <span>{{ errorMsg }}</span>
+            <div class="form-group account-form-group">
+              <textarea
+                class="feedback"
+                v-model="feedback.message"
+                rows="3"
+                placeholder="Enter your feedback here. It will help us improve the VirtualClass experience"
+                autocomplete="off"
+              >
+              </textarea>
+            </div>
+            <input 
+              type="submit"
+              value="Send Feedback"
+              @click.prevent="sendFeedback()"
+            >
+          </form>
+        </main>
+      </div>
+    </div>      
+    <!-- END OF FEEDBACK MODAL -->
   </div>
 </body>
 </html>
@@ -128,20 +168,85 @@
       return {
         baseUrl: 'https://vidyochatt.herokuapp.com/',
         loggedIn: false,
+        showFeedbackForm: false,
+        feedback: {
+          message: ''
+        },
+        errorMsg: '',
         host_meeting: 'https://vidyochatt.herokuapp.com/login.html',
         join_meeting: 'https://vidyochatt.herokuapp.com/login.html'
       }
     },
     methods: {
+      logout () {
+        localStorage.clear()
+        self.location = 'index.html'
+      },
+      closeModal () {
+        this.showFeedbackForm = !this.showFeedbackForm
+        document.documentElement.style.overflow = 'auto';  // firefox, chrome
+        document.body.scroll = "yes"; // ie only
+        //localStorage.removeItem('meetingEnd')
+      },
+      sendFeedback () {
+        if (this.feedback.message === '') {
+          this.errorMsg = 'Please fill out the feedback form'
+        } else {
+          this.errorMsg = ''
+          const current_user = JSON.parse(localStorage.getItem('meetingEnd'))
+          const payload = {
+            message: this.feedback.message,
+            respondent: current_user
+          }
+          const fetchData  = {
+            method: 'post',
+            body:  payload,
+          }
+          let url = `${this.baseUrl}feedback`
+          console.log(fetchData)
+          fetch(url, fetchData)
+          .then(resp => {
+              if(resp.ok) {
+                return resp.json()
+              } else {
+                return Promise.reject()
+              }
+          })
+          .then(data => {
+            if (data.reply === 'success') {
+              this.showFeedbackForm = !this.showFeedbackForm
+              document.documentElement.style.overflow = 'auto';  // firefox, chrome
+              document.body.scroll = "yes"; // ie only
+              localStorage.removeItem('meetingEnd')
+            } else {
+              this.error = data.reply
+            }
+          })
+          .catch(error => {
+            console.log(error)
+          })
+        }
+      }
     },
-    mounted() {
+    created() {
       const user = localStorage.getItem('user')
+      const meetingStatus = localStorage.getItem('meetingEnd')
+      const meeting = localStorage.getItem('meeting')
+
       if (user !== null) {
         const current_user = JSON.parse(user)
         if (current_user) {
           this.loggedIn = true
           this.host_meeting = `${this.baseUrl}host_meeting`
           this.join_meeting = `${this.baseUrl}join_meeting`
+        }
+        if (meeting !== null) {
+          self.location = `${this.baseUrl}conference_meeting.html`
+        }
+        if (meetingStatus !== null) {
+          this.showFeedbackForm = true
+          document.documentElement.style.overflow = 'hidden';  // firefox, chrome
+          document.body.scroll = "no"; // ie only
         }
       }
     }

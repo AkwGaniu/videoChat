@@ -79,7 +79,19 @@ const messagesModel = new mongoose.Schema({
   }
 })
 
+const feedbackModel = new mongoose.Schema({
+  respondent: {
+    type: String,
+    required: true
+  },
+  messages: {
+    type: String,
+    required: true
+  }
+})
+
 module.exports.users = mongoose.model('users', userModel)
 module.exports.meetings = mongoose.model('meetings', meetingModel)
 module.exports.participants = mongoose.model('participants', participantsModel)
 module.exports.messages = mongoose.model('messages', messagesModel)
+module.exports.feedbacks = mongoose.model('feedbacks', feedbackModel)

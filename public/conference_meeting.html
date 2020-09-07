@@ -11,13 +11,13 @@
   <div id="App" class="meeting-room">
     <div class="end-meeting">
       <button
-        @click=""
+        @click="leaveMeeting"
         v-if="meeting.meeting.host == meeting.recipient._id"
       >
         End Meeting
       </button>
       <button
-        @click=""
+        @click="leaveMeeting"
         v-else
       >
         Leave
@@ -138,9 +138,15 @@
         </div>
       </div>
     </div>
+    <div
+      class="userLeft"
+      v-if="information.length > 0"
+    >
+      <p> {{ information }} </p>
+    </div>
   </div>
   <script src="/socket.io/socket.io.js"></script>
-  <script src="bundle.js"></script>
+  <!-- <script src="bundle.js"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </body>
 </html>
@@ -158,6 +164,7 @@ const app =  new Vue({
     generalMsg: null,
     userTyping: '',
     showParticipants: true,
+    information: '',
     nav: {
       video: true,
       participants: false,
@@ -186,6 +193,7 @@ const app =  new Vue({
     newUser () {
       socket.emit('newUser', this.meeting)
     },
+    
     initiateChat() {
       this.userTyping = ''
       socket.emit('finish', this.meeting.recipient.names)
@@ -200,6 +208,7 @@ const app =  new Vue({
         this.msg =''
       }
     },
+    
     typing(e) {
       if (e.keyCode !== 13) {
         socket.emit('typing', this.meeting.recipient.names)
@@ -207,7 +216,24 @@ const app =  new Vue({
         this.userTyping = ''
         socket.emit('finish', this.meeting.recipient.names)
       }
-    }
+    },
+    
+    leaveMeeting () {
+      const participant = this.meeting.recipient._id
+      const host = this.meeting.meeting.host
+      const payload = {
+        meeting: this.meeting.meeting._id,
+        participant: participant
+      }
+      localStorage.removeItem('meeting')
+      if (participant === host) {
+        socket.emit('endMeeting', payload)
+      } else {
+        socket.emit('leaveMeeting', payload)
+      }
+      localStorage.setItem('meetingEnd', JSON.stringify(this.meeting.recipient.names))
+      self.location = 'index.html'
+    },
   },
   mounted() {
     socket.on('message', (data) => {
@@ -226,16 +252,45 @@ const app =  new Vue({
       this.participants = payload.participants
       this.messages = payload.chats
     })
+
+    socket.on('userJoined', (msg) => {
+      this.information = msg
+
+      setTimeout(()=> {
+        this.information = ''
+      }, 3000)
+    })
+
+    socket.on('participantLeft', (data) => {
+      this.participants = data.meetingParticipants
+      this.information = data.message
+
+      setTimeout(()=> {
+        this.information = ''
+      }, 3000)
+    })
+
+    socket.on('meetingEnded', (msg) => {
+      localStorage.setItem('meetingEnd', JSON.stringify(this.meeting.recipient.names))
+      self.location = 'index.html'
+    })
   },
   created() {
     const user = localStorage.getItem('user')
     const meeting = localStorage.getItem('meeting')
-    if (user == null) {
-      self.location = 'login.html'
+    const constraintObj = {video: true, audio: true}
+    if (meeting == null || user == null) {
+      self.location = `${this.baseUrl}join_meeting`
     } else {
-      (meeting !== null) ? this.meeting = JSON.parse(meeting) : self.location =  `${baseUrl}join_meeting`
+      (meeting !== null) ? this.meeting = JSON.parse(meeting) : self.location =  `${this.baseUrl}join_meeting`
       this.user = this.meeting.recipient.names
     }
+    navigator.mediaDevices.getUserMedia(constraintObj).then( function (stream){ 
+      console.log(stream)
+    })
+    .catch(err => {
+      console.log(err)
+    })
 
     //NEW USER JOINED
     this.newUser()

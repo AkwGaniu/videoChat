@@ -1,5 +1,5 @@
-let Peer = require('simple-peer')
-let socket = io()
+const Peer = require('simple-peer')
+const socket = io()
 const video = document.querySelector('video')
 let client = {}
 const constraintObj = {video: true, audio: true}
@@ -27,19 +27,19 @@ if (navigator.mediaDevices === undefined) {
   })
 }
 
-// console.log(video)
+
 //GET VIDEO STREAM
 navigator.mediaDevices.getUserMedia(constraintObj).then( function (stream){
   // socket.emit('newClient')
-  alert('i got here')
-  if ('srcObject' in video) {
-    alert(stream)
-    video.srcObject = stream
-    console.log(video)
-  } else { 
-    video.src = window.URL.createObjectURL(stream)
-  }
-  video.play()
+  alert('i got here') 
+  // if ('srcObject' in video) {
+  //   alert(stream)
+  //   video.srcObject = stream
+  //   console.log(video)
+  // } else { 
+  //   video.src = window.URL.createObjectURL(stream)
+  // }
+  // video.play()
 
   // // INITIALIZE A PEER
   // function initPeer(type) {
@@ -113,6 +113,9 @@ navigator.mediaDevices.getUserMedia(constraintObj).then( function (stream){
   // socket.on('backAnswer', signalAnswer)
   // socket.on('sessionActive', sessionActive)
   // socket.on('createPeer', makePeer)
-  // socket.on('removeVideo', removeVideo)    
+  // socket.on('removeVideo', removeVideo)   
 })
-.catch(err => console.log(err))
+.catch(err => {
+  console.log('here')
+  console.log(err)
+})

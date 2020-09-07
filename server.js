@@ -10,6 +10,8 @@ const bodyParser = require('body-parser');
 
 const routes  = require('./router/routes')
 const ioFuctions  = require('./controllers/ioFunctions')
+const Model = require('./model/schema')
+
 
 // app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -64,7 +66,7 @@ io.on('connection', function (socket) {
 
 
   // CHATTING FUNCTIONALITIES
-  socket.on('newUser', ioFuctions.sendNewUser)
+  socket.on('newUser', sendNewUser)
 
   socket.on('chat', ioFuctions.broadcastMsg)
 
@@ -75,6 +77,11 @@ io.on('connection', function (socket) {
   socket.on('finish', (user) => {
     socket.broadcast.emit('userStoppedTyping', user)
   })
+
+  socket.on('leaveMeeting', ioFuctions.leaveMeeting)
+
+  socket.on('endMeeting', ioFuctions.endMeeting)
+
 })
 
 function Disconnect () {
@@ -97,3 +104,72 @@ app.use((error, req, resp, next) => {
 
 const port = process.env.PORT || 3000
 http.listen(port, () => console.log(`Server active on port ${port}`))
+
+
+
+
+// FUNCTIONS
+const sendNewUser = async function  (user) {
+  try {
+    let meetingPayload = {
+      chats: [],
+      participants:  [],
+    }
+    const recipentExist = await Model.participants.findOne({
+      participant: user.recipient._id,
+      meeting_id: user.meeting._id
+    })
+    if (!recipentExist) {
+      let newParticipant = new Model.participants({
+        meeting_id: user.meeting._id,
+        participant: user.recipient._id,
+      })
+      newParticipant.save( async (err, data) => {
+        if(err) next(err)
+
+        await Model.messages.findOne({ meeting_id: user.meeting._id }, (err, data)=> {
+          if (err) next(err)
+          if (data !== null) {
+            meetingPayload.chats = data.messages
+          } else {
+            meetingPayload.chats = []
+          }
+        })
+        let recipient = await Model.users.findOne({_id: user.recipient._id}, {password: false})
+        this.broadcast.emit('userJoined', `${recipient.names} Joined`)
+        Model.participants.find({meeting_id: data.meeting_id}, async (err, data)=> {
+          if (err) throw err
+          for (user of data) {
+            let recipient = await Model.users.findOne({_id: user.participant}, {password: false})
+            meetingPayload.participants.push(recipient)
+          }
+          io.sockets.emit('appendUser', meetingPayload)
+        })                                       
+      })
+    } else {
+      let data = {
+        participants: user.recipient._id,
+        meeting_id: user.meeting._id,
+      }
+      await Model.messages.findOne({ meeting_id: user.meeting._id }, (err, data)=> {
+        if (err) next(err) 
+        if (data !== null) {
+          meetingPayload.chats = data.messages
+        } else {
+          meetingPayload.chats = []
+        }
+      })
+      
+      Model.participants.find({meeting_id: data.meeting_id}, async (err, data)=> {
+        if (err) throw err
+        for (user of data) {
+          let recipient = await Model.users.findOne({_id: user.participant}, {password: false})
+          meetingPayload.participants.push(recipient)
+        }
+        io.sockets.emit('appendUser', meetingPayload)
+      })
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}

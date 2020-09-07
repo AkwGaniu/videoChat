@@ -658,3 +658,183 @@ body {
     font-size: 12px;
   }
 }
+
+#App {
+  position: relative;
+}
+
+#App .userLeft {
+  position: absolute;
+  background-color: #444444;
+  width: 100%;
+  bottom: 0;
+}
+
+#App .userLeft p {
+  color: whitesmoke;
+  width: 100%;
+  text-align: center;
+  margin: 0px;
+  padding: 5px 10px;
+  font-size: 20px;
+  text-shadow: 2px 2px 4px #444444;
+  letter-spacing: 2px;
+}
+
+.add-record-modal {
+  display: none;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  -webkit-box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.add-record-modal .modal-content {
+  width: 40%;
+  border-radius: 20px;
+  padding: 0px 0px;
+}
+
+@media (max-width: 768px) {
+  .add-record-modal .modal-content {
+    width: 80%;
+  }
+}
+
+.add-record-modal .modal-content header {
+  padding: 5px;
+  background-color: #454546;
+  border-radius: 20px 20px 0px 0px;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .add-record-modal .modal-content header {
+    padding: 15px;
+    border-radius: 0px;
+  }
+}
+
+.add-record-modal .modal-content header h2 {
+  color: whitesmoke;
+  font-weight: 400;
+  font-size: 20px;
+  padding-left: 5px;
+}
+
+.add-record-modal .modal-content header span {
+  font-size: 42px;
+  color: whitesmoke;
+  font-weight: 400;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  position: absolute;
+  top: -16px;
+  right: 14px;
+  cursor: pointer;
+}
+
+.add-record-modal .modal-content header span:hover {
+  color: red;
+}
+
+@media (max-width: 768px) {
+  .add-record-modal .modal-content header span {
+    top: -5px;
+  }
+}
+
+@media (max-width: 768px) {
+  .add-record-modal .modal-content .client-main {
+    overflow-y: scroll;
+  }
+}
+
+.add-record-modal .modal-content main {
+  padding: 10px 20px 20px;
+}
+
+@media (max-width: 768px) {
+  .add-record-modal .modal-content main {
+    padding: 20px 20px;
+  }
+}
+
+.add-record-modal .modal-content main span {
+  color: #f38a8a;
+  font-size: smaller;
+}
+
+.add-record-modal .modal-content main .account-form-group {
+  width: 100% !important;
+}
+
+.add-record-modal .modal-content main .form-group {
+  padding: 5px;
+  width: 50%;
+  margin: 0px auto 0px;
+}
+
+@media (max-width: 768px) {
+  .add-record-modal .modal-content main .form-group {
+    padding: 10px;
+  }
+}
+
+.add-record-modal .modal-content main .form-group .feedback {
+  border-radius: 5px;
+  border: 0.5px solid grey;
+  outline: none;
+  font-size: 13px;
+  background-color: transparent;
+  padding: 5px 10px;
+  width: 100%;
+}
+
+.add-record-modal .modal-content main .form-group .feedback::-webkit-input-placeholder {
+  font-size: 12.5px;
+  color: #c7c4c4;
+}
+
+.add-record-modal .modal-content main .form-group .feedback:-ms-input-placeholder {
+  font-size: 12.5px;
+  color: #c7c4c4;
+}
+
+.add-record-modal .modal-content main .form-group .feedback::-ms-input-placeholder {
+  font-size: 12.5px;
+  color: #c7c4c4;
+}
+
+.add-record-modal .modal-content main .form-group .feedback::placeholder {
+  font-size: 12.5px;
+  color: #c7c4c4;
+}
+
+.add-record-modal .modal-content main input[type=submit] {
+  background-color: #2539ac;
+  width: 50%;
+  margin: 20px 0% 0px 50%;
+  padding: 5px 10px;
+  font-size: 17px;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  color: whitesmoke;
+}
+
+.showModalClass {
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+}

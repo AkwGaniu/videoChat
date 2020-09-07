@@ -5,12 +5,7 @@ const Model = require('../model/schema')
 const bcrypt = require('bcryptjs')
 const shortid = require('shortid')
 
-const baseUrl = 'https://vidyochatt.herokuapp.com/'
-const MEETING_STATUS = {
-  PENDING: 'PENDING',
-  IN_PROGRESS: 'IN_PROGRESS',
-  CLOSED: 'CLOSED'
-}
+const settings = require('./baseData')
 
 cloudinary.config({ 
   cloud_name: 'djxyqrkmi', 
@@ -110,7 +105,7 @@ module.exports.logout = async (req, resp, next) => {
 }
 
 module.exports.host_meeting = async (req, resp, next) => {
-  resp.status(200).redirect(`${baseUrl}host_meeting.html`)
+  resp.status(200).redirect(`${settings.baseUrl}host_meeting.html`)
 }
 
 module.exports.schedule_meeting = async (req, resp, next) => {
@@ -125,7 +120,7 @@ module.exports.schedule_meeting = async (req, resp, next) => {
     meeting_id: meeting_id,
     title: title,
     host: host,
-    status: MEETING_STATUS.PENDING,
+    status: settings.MEETING_STATUS.PENDING,
     date: date,
     from: from,
     to: to
@@ -143,7 +138,7 @@ module.exports.schedule_meeting = async (req, resp, next) => {
 }
 
 module.exports.join_meeting = async (req, resp, next) => {
-  resp.status(200).redirect(`${baseUrl}join_meeting.html`)
+  resp.status(200).redirect(`${settings.baseUrl}join_meeting.html`)
 }
 
 module.exports.join_meeting_by_id = async (req, resp, next) => {
@@ -162,10 +157,9 @@ module.exports.join_meeting_by_id = async (req, resp, next) => {
           await Model.meetings
           .findOneAndUpdate(
             {meeting_id: meeting.meeting_id},
-            {status: MEETING_STATUS.IN_PROGRESS},
+            {status: settings.MEETING_STATUS.IN_PROGRESS},
             {new: true}, async (err, data) => {
               if (err) next(err)
-
               const recipient = await Model.users.findOne({_id: user}, {password: false})
               resp.status(200).json({
                 reply: 'success',
@@ -182,7 +176,7 @@ module.exports.join_meeting_by_id = async (req, resp, next) => {
         })
       } else if (meeting.status === 'CLOSED') {
         resp.status(200).json({
-          reply: "The meeting is over"
+          reply: "The meeting is over, contact the host for a reschedule"
         })
       } else {
         const recipient = await Model.users.findOne({_id: user}, {password: false})
@@ -201,4 +195,23 @@ module.exports.join_meeting_by_id = async (req, resp, next) => {
     console.log(error)
     next(error)
   }
+}
+
+module.exports.feedback = async (req, resp, next) => {
+  console.log(req.body)
+  const respondent = req.body.respondent
+  const message = req.body.message
+
+  let newFeedback = new Model.feedbacks ({
+    respondent: respondent,
+    message: message
+  })
+
+  await newFeedback.save( async (err, data) => {
+    if(err) next(err)
+    resp.status(200).json({
+      reply: 'success',
+      message: 'Feedback recieved, Thanks for sharing your thought.',
+    })  
+  })
 }

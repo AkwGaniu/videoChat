@@ -41,8 +41,8 @@
         class="form-inline my-2 my-lg-0"
         v-else
       >
-        <a href="logout" class="btn btn-outline-secondary my-2 mr-4 my-sm-0">Sign Out</a>
-      </div>
+      <button @click="logout" class="btn btn-outline-secondary my-2 mr-4 my-sm-0">Sign Out</button>
+    </div>
       </div>
     </nav>
     <div id="loginApp">
@@ -162,11 +162,18 @@
             console.log(error)
           })
         }
+      },
+
+      logout () {
+        localStorage.clear()
+        self.location = 'index.html'
       }
     },
     
     created() {
       const user = localStorage.getItem('user')
+      const meeting = localStorage.getItem('meeting')
+
       if (user == null) {
         self.location = 'login.html'
       } else {
@@ -175,6 +182,9 @@
           this.loggedIn = true
           this.host_meeting = `${this.baseUrl}host_meeting`
           this.join_meeting = `${this.baseUrl}join_meeting`
+        }
+        if (meeting !== null) {
+          self.location = `${this.baseUrl}conference_meeting.html`
         }
       }
     }
