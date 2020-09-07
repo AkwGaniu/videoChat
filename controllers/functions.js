@@ -9,7 +9,7 @@ const settings = require('./baseData')
 
 cloudinary.config({ 
   cloud_name: 'djxyqrkmi', 
-  api_key: '936229992257755', 
+  api_key: '936229992257755',
   api_secret: 'f2EmndyU3QzODgVQ6_VP8LnFF3A' 
 });
 
@@ -40,7 +40,7 @@ module.exports.register_user = async function(req, resp, next) {
           user_profile_image.mv(file_path, async function(err) {
             if (err) throw(err)
             cloudinary.v2.uploader.upload(file_path, async function(error, result) {
-              if (error) return next(error)
+              if (error) return console.log(error)
 
               let newUser = new Model.users({
                 names: names,
@@ -62,6 +62,7 @@ module.exports.register_user = async function(req, resp, next) {
       resp.status(200).json({reply: "Please provide a profile picture"})
     }
   } catch (error) {
+    console.log(error)
     next(error)
   }
 }
@@ -198,20 +199,16 @@ module.exports.join_meeting_by_id = async (req, resp, next) => {
 }
 
 module.exports.feedback = async (req, resp, next) => {
-  console.log(req.body)
   const respondent = req.body.respondent
   const message = req.body.message
 
-  let newFeedback = new Model.feedbacks ({
+  let newFeedback = new Model.feedbacks({
     respondent: respondent,
     message: message
   })
-
-  await newFeedback.save( async (err, data) => {
-    if(err) next(err)
-    resp.status(200).json({
-      reply: 'success',
-      message: 'Feedback recieved, Thanks for sharing your thought.',
-    })  
+  await newFeedback.save()
+  resp.status(200).json({
+    reply: 'success',
+    message: 'Feedback recieved, Thank you for sharing your thought.',
   })
 }

@@ -121,10 +121,10 @@
 
     <!-- FEEDBACK MODAL -->
     <div
-    :class="[{showModalClass: showFeedbackForm}, 'add-record-modal']"
+      :class="[{showModalClass: showFeedbackForm}, 'add-record-modal']"
     >
       <div
-      class="modal-content accouunt-entry"
+        class="modal-content accouunt-entry"
       >
         <header>
           <h2>
@@ -134,7 +134,7 @@
             @click="closeModal()"
           >+</span>
         </header>
-        <main>
+        <main ref="successMsg">
           <p>Hope that was cool? <br> Share your feedback to better improve the experience</p>
           <form action="#">
             <span>{{ errorMsg }}</span>
@@ -194,10 +194,11 @@
         } else {
           this.errorMsg = ''
           const current_user = JSON.parse(localStorage.getItem('meetingEnd'))
-          const payload = {
-            message: this.feedback.message,
-            respondent: current_user
-          }
+
+          const payload  = new FormData()
+          payload.append('message', this.feedback.message)
+          payload.append('respondent', current_user)
+
           const fetchData  = {
             method: 'post',
             body:  payload,
@@ -218,6 +219,7 @@
               document.documentElement.style.overflow = 'auto';  // firefox, chrome
               document.body.scroll = "yes"; // ie only
               localStorage.removeItem('meetingEnd')
+              setTimeout(()=> {alert(data.message)}, 1000)
             } else {
               this.error = data.reply
             }
