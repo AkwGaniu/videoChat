@@ -23,6 +23,7 @@
         Leave
       </button>
     </div>
+
     <div class="mobile-nav">
       <section class="tab-btns">
         <div class="video-btn">
@@ -51,6 +52,7 @@
         </div>
       </section>
     </div>
+
     <div class="main-container">
       <div
         class="video-holder"
@@ -58,7 +60,7 @@
       >
         <div class="col-12 col-sm-6 d-flex justify-content-center">
           <div class="embed-responsive embed-responsive-16by9">
-            <video class="embed-responsive-item" muted></video>
+            <video class="embed-responsive-item"></video>
           </div>
         </div>
         <div class="col-12 col-sm-6 d-flex justify-content-center">
@@ -66,6 +68,7 @@
           </div>
         </div>
       </div>
+
       <div 
         id="chatApp"
         :class="[{blockDisplay: nav.chat || nav.participants}, 'chat-holder']"
@@ -146,12 +149,12 @@
     </div>
   </div>
   <script src="/socket.io/socket.io.js"></script>
-  <!-- <script src="bundle.js"></script> -->
+  <script src="bundle.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </body>
 </html>
 <script>
-const socket = io()
+const socket = io('/chat')
 const app =  new Vue({
   el: '#App',
   data: {
@@ -285,13 +288,6 @@ const app =  new Vue({
       (meeting !== null) ? this.meeting = JSON.parse(meeting) : self.location =  `${this.baseUrl}join_meeting`
       this.user = this.meeting.recipient.names
     }
-    navigator.mediaDevices.getUserMedia(constraintObj).then( function (stream){ 
-      console.log(stream)
-    })
-    .catch(err => {
-      console.log(err)
-    })
-
     //NEW USER JOINED
     this.newUser()
   }

@@ -45,43 +45,46 @@ app.use((req, resp, next) => {
 app.use('/', routes)
 
 app.use(express.static(__dirname + "/public"))
+const chat = io.of('/chat')
+const video = io.of('/video')
 let clients = 0
 
-io.on('connection', function (socket) {
-  // VIDEO FUNCTIONALITIES
+chat.on('connection', function (socket) {
+    // CHATTING FUNCTIONALITIES
+    socket.on('newUser', sendNewUser)
+
+    socket.on('chat', ioFuctions.broadcastMsg)
+  
+    socket.on('typing', (user) => {
+      socket.broadcast.emit('userTyping', `${user} is typing...`)
+    })
+  
+    socket.on('finish', (user) => {
+      socket.broadcast.emit('userStoppedTyping', user)
+    })
+  
+    socket.on('leaveMeeting', ioFuctions.leaveMeeting)
+  
+    socket.on('endMeeting', ioFuctions.endMeeting)
+})
+
+video.on('connection', function (socket) {
   socket.on('newClient', function () {
     if (clients < 2) {
       if (clients == 1) {
-        this.emit('createPeer')
+        console.log('yoooo here')
+        io.of('video').emit('createPeer')
       }
     } else {
       this.emit('sessionActive')
     }
-    clients++
+    console.log(clients)
+    clients += 1
   })
 
   socket.on('offer', ioFuctions.sendOffer)
   socket.on('answer', ioFuctions.sendAnser)
   socket.on('disconnect', Disconnect)
-
-
-  // CHATTING FUNCTIONALITIES
-  socket.on('newUser', sendNewUser)
-
-  socket.on('chat', ioFuctions.broadcastMsg)
-
-  socket.on('typing', (user) => {
-    socket.broadcast.emit('userTyping', `${user} is typing...`)
-  })
-
-  socket.on('finish', (user) => {
-    socket.broadcast.emit('userStoppedTyping', user)
-  })
-
-  socket.on('leaveMeeting', ioFuctions.leaveMeeting)
-
-  socket.on('endMeeting', ioFuctions.endMeeting)
-
 })
 
 function Disconnect () {
@@ -143,7 +146,7 @@ const sendNewUser = async function  (user) {
             let recipient = await Model.users.findOne({_id: user.participant}, {password: false})
             meetingPayload.participants.push(recipient)
           }
-          io.sockets.emit('appendUser', meetingPayload)
+          io.of('chat').emit('appendUser', meetingPayload)
         })                                       
       })
     } else {
@@ -166,7 +169,7 @@ const sendNewUser = async function  (user) {
           let recipient = await Model.users.findOne({_id: user.participant}, {password: false})
           meetingPayload.participants.push(recipient)
         }
-        io.sockets.emit('appendUser', meetingPayload)
+        io.of('chat').emit('appendUser', meetingPayload)
       })
     }
   } catch (error) {

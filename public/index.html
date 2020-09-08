@@ -93,11 +93,11 @@
                   </div>
               </div>
               <div class="col">
-                  <ul class="animate__animated animate__fadeInLeft">
-                      <li><a href="#">VirTual LecTure</router-link></li>
-                      <li><a href="#">Schedule Meeting</router-link></li>
-                      <li><a href="#">Join Meeting</router-link></li>
-                  </ul>
+                <ul class="animate__animated animate__fadeInLeft">
+                  <li><a href="index.html">VirTual LecTure</router-link></li>
+                  <li><a :href="host_meeting">Schedule Meeting</router-link></li>
+                  <li><a :href="join_meeting">Join Meeting</router-link></li>
+                </ul>
               </div>
               <div class="col">
                   <div class="social-links">
@@ -121,7 +121,7 @@
 
     <!-- FEEDBACK MODAL -->
     <div
-      :class="[{showModalClass: showFeedbackForm}, 'add-record-modal']"
+      :class="[{showModalClass: showFeedbackForm}, 'feedback-modal']"
     >
       <div
         class="modal-content accouunt-entry"
@@ -186,7 +186,7 @@
         this.showFeedbackForm = !this.showFeedbackForm
         document.documentElement.style.overflow = 'auto';  // firefox, chrome
         document.body.scroll = "yes"; // ie only
-        //localStorage.removeItem('meetingEnd')
+        localStorage.removeItem('meetingEnd')
       },
       sendFeedback () {
         if (this.feedback.message === '') {
