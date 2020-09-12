@@ -30,7 +30,7 @@ const constraintObj = {video: true, audio: true}
 
 //GET VIDEO STREAM
 navigator.mediaDevices.getUserMedia(constraintObj)
-.then(function (stream){
+.then(stream => { 
   socket.emit('newClient')
   if ('srcObject' in video) {
     video.srcObject = stream
@@ -43,7 +43,7 @@ navigator.mediaDevices.getUserMedia(constraintObj)
   // INITIALIZE A PEER
   function initPeer(type) {
     let peer = new Peer({initiator: (type == 'init') ? true : false, stream: stream, trickle: false})
-    setTimeout(() => {
+    setTimeout(() => {  
       peer.on('stream', function (stream) {
         createVideo(stream)
       })  
