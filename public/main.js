@@ -31,6 +31,8 @@ const constraintObj = {video: true, audio: true}
 //GET VIDEO STREAM
 navigator.mediaDevices.getUserMedia(constraintObj)
 .then(stream => { 
+  console.log(video)
+
   socket.emit('newClient')
   if ('srcObject' in video) {
     video.srcObject = stream
@@ -39,7 +41,7 @@ navigator.mediaDevices.getUserMedia(constraintObj)
     video.src = window.URL.createObjectURL(stream)
   }
   video.play()
-
+ 
   // INITIALIZE A PEER
   function initPeer(type) {
     let peer = new Peer({initiator: (type == 'init') ? true : false, stream: stream, trickle: false})
@@ -59,10 +61,10 @@ navigator.mediaDevices.getUserMedia(constraintObj)
     document.getElementById('peerVideo').remove()
   }
 
-  // PEER OF TYPE INIT
+  // MAKE PEER OF TYPE INIT
   function makePeer() {
     client.gotAnswer = false
-    let peer = initPeer('init')
+    let peer =  ('init')
     peer.on('signal', function(data) {
       if (!client.gotAnswer) {
         socket.emit('offer', data)
@@ -71,7 +73,7 @@ navigator.mediaDevices.getUserMedia(constraintObj)
     client.peer = peer
   }
 
-  // PEER OF TYPE NotInit 
+  // MAKE PEER OF TYPE NotInit 
   function frontAnswer (offer) {
     let peer = initPeer('notInit')
     peer.on('signal', (data) => {
