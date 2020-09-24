@@ -46,7 +46,7 @@ module.exports.sendOffer = function (offer) {
 }
 
 module.exports.sendAnser = function (data) {
-  this.broadcast.emit('backAnswer', offer)
+  this.broadcast.emit('backAnswer', data)
 }
 
 module.exports.endMeeting = function(meeting) {

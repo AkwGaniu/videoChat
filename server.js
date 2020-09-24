@@ -66,13 +66,32 @@ chat.on('connection', function (socket) {
     socket.on('leaveMeeting', ioFuctions.leaveMeeting)
   
     socket.on('endMeeting', ioFuctions.endMeeting)
+
+
+
+    // VIDEO
+    socket.on('newClient', function () {
+      if (clients < 2) {
+        if (clients == 1) {
+          console.log('yoooo here')
+          io.of('chat').emit('createPeer')
+        }
+      } else {
+        this.emit('sessionActive')
+      }
+      console.log(clients)
+      clients += 1
+    })
+  
+    socket.on('offer', ioFuctions.sendOffer)
+    socket.on('answer', ioFuctions.sendAnser)
+    socket.on('disconnect', Disconnect)
 })
 
 video.on('connection', function (socket) {
   socket.on('newClient', function () {
     if (clients < 2) {
       if (clients == 1) {
-        console.log('yoooo here')
         io.of('video').emit('createPeer')
       }
     } else {
@@ -82,16 +101,20 @@ video.on('connection', function (socket) {
     clients += 1
   })
 
-  socket.on('offer', ioFuctions.sendOffer)
+  socket.on('offer', (offer) => {
+    console.log('here')
+    socket.emit('backOffer', offer)
+  })
   socket.on('answer', ioFuctions.sendAnser)
   socket.on('disconnect', Disconnect)
 })
 
 function Disconnect () {
-  if (clients > 0) {
-    clients--
-    this.broadcast.emit('removeVideo')
-  }
+  console.log('disconnected')
+  // if (clients > 0) {
+  //   clients--
+  //   this.broadcast.emit('removeVideo')
+  // }
 }
 
 //Custom Error Handler middleware
