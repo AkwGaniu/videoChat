@@ -33,6 +33,7 @@ navigator.mediaDevices.getUserMedia(constraintObj)
 .then(stream => {
   socket.emit('newClient')
   if ('srcObject' in video) {
+    console.log({first_media: stream})
     video.srcObject = stream
   } else {
     video.src = window.URL.createObjectURL(stream)
@@ -91,13 +92,13 @@ navigator.mediaDevices.getUserMedia(constraintObj)
     let video = document.createElement('video')
     video.id = 'peerVideo'
     if ('srcObject' in video) {
+      console.log({second_media: stream})
       video.srcObject = stream
     } else {
       video.src = window.URL.createObjectURL(stream)
     }
     video.class = 'embed-responsive-item'
     document.querySelector('#peerDiv').appendChild(video)
-    console.log(video.srcObject, video)
     video.play()
   }
 
