@@ -8135,21 +8135,32 @@ const constraintObj = {video: true, audio: true}
 
 
 //GET VIDEO STREAM
+video.load()
 navigator.mediaDevices.getUserMedia(constraintObj)
 .then(stream => {
   socket.emit('newClient')
   if ('srcObject' in video) {
-    console.log({first_media: stream})
     video.srcObject = stream
   } else {
     video.src = window.URL.createObjectURL(stream)
   }
-  video.play()
- 
+  playPromise =   video.play()
+  if (playPromise !== undefined) {
+    playPromise.then(_ => {
+      console.log({first_media: video.srcObject})
+      alert('playing 1')
+      // Automatic playback started!
+      // Show playing UI.
+    })
+    .catch(error => {  
+      console.log(error)
+    });
+  }
+   
   // INITIALIZE A PEER
   function initPeer(type) {
     let init = false
-    if(type === 'init') {
+    if(type === 'init') { 
       init = true
     }
     let peer = new Peer({initiator: init, stream: stream, trickle: false})
@@ -8196,18 +8207,29 @@ navigator.mediaDevices.getUserMedia(constraintObj)
 
   function createVideo (stream) {
     let video = document.createElement('video')
+    video.load()
     video.id = 'peerVideo'
     if ('srcObject' in video) {
-      console.log({second_media: stream})
       video.srcObject = stream
-    } else {
+    } else { 
       video.src = window.URL.createObjectURL(stream)
     }
     video.class = 'embed-responsive-item'
     document.querySelector('#peerDiv').appendChild(video)
-    video.play()
+    playPromise =   video.play()
+    if (playPromise !== undefined) {
+      playPromise.then(_ => {
+        console.log({first_media: video.srcObject})
+        alert("playing 2")
+        // Automatic playback started!
+        // Show playing UI.
+      }) 
+      .catch(error => {
+        console.log(error) 
+      });
+    }
   }
-
+  
   function sessionActive () { 
     document.write('Session Active, Please come back later')
   }
