@@ -73,7 +73,8 @@ chat.on('connection', function (socket) {
       io.of('chat').emit('createPeer')
     } else {
       clients++
-    } 
+    }
+    console.log(clients)
   })
 
   socket.on('offer', ioFunctions.sendOffer)
@@ -134,7 +135,7 @@ const sendNewUser = async function  (user) {
             meetingPayload.participants.push(recipient)
           }
           io.of('chat').emit('appendUser', meetingPayload)
-        })                                       
+        })
       })
     } else {
       let data = {
