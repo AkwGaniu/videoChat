@@ -157,7 +157,7 @@ const socket = io('/chat')
 const app =  new Vue({
   el: '#App',
   data: {
-    baseUrl: 'https://vidyochatt.herokuapp.com/',
+    baseUrl: 'http://localhost:3000/',
     meeting: {},
     msg: '',
     messages: [],
@@ -262,7 +262,6 @@ const app =  new Vue({
         this.information = ''
       }, 3000)
     })
-
     socket.on('participantLeft', (data) => {
       this.participants = data.meetingParticipants
       this.information = data.message
@@ -273,10 +272,12 @@ const app =  new Vue({
     })
 
     socket.on('meetingEnded', (msg) => {
+      localStorage.removeItem('meeting')
       localStorage.setItem('meetingEnd', JSON.stringify(this.meeting.recipient.names))
       self.location = 'index.html'
     })
   },
+
   created() {
     const user = localStorage.getItem('user')
     const meeting = localStorage.getItem('meeting')

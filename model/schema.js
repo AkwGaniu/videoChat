@@ -65,7 +65,11 @@ const participantsModel = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
     required: true
-  }
+  },
+  socketId: {
+    type: String,
+    required: true
+  },
 })
 
 const messagesModel = new mongoose.Schema({
