@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>Message HTML Title</title>
+  </head>
+  <body>
+    <div class="meeting-details">
+      <p style="font-weight: bold;">VirTual Class Schedule</p>
+      <p> 
+        <span class="left">Meeting Title: </span>
+        <span class="right">{{ meeting_title }}</span> 
+      </p>
+      <p> 
+        <span class="left">Meeting Id: </span>
+        <span class="right">{{ meeting_id }}</span>
+      </p>
+      <p>
+        <span class="left">Host: </span>
+        <span class="right">{{ host }}</span>
+      </p>
+      <p>
+        <span class="left">Meeting Date: </span>
+        <span class="right">{{ meeting_date }}</span>
+      </p>
+      <p>
+        <span class="left">Start Time: </span>
+        <span class="right">{{ start_time }}</span>
+      </p>
+      <p>
+        <span class="left">Meeting Ends: </span>
+        <span class="right">{{ end_time }}</span>
+      </p>
+      <p>Copy meeting Id and follow <a href="http://localhost:3000/join_meeting.html" target="_blank" rel="noopener noreferrer">this</a> link to join meeting</p>
+    </div>
+  </body>
+</html>

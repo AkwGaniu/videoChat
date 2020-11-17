@@ -8110,6 +8110,7 @@ const video = document.querySelector('video')
 let clients = []
 const constraintObj = {video: true, audio: true}
 const meeting = JSON.parse(localStorage.getItem('meeting'))
+
 const meeting_detail = {
   meeting_id: meeting.meeting._id,
   current_user: meeting.recipient._id
@@ -8128,9 +8129,8 @@ navigator.mediaDevices.getUserMedia(constraintObj)
   playPromise =   video.play()
   if (playPromise !== undefined) {
     playPromise.then(_ => {
-      console.log({first_media: video.srcObject}, 'PLAYING')
+      console.log({first_media: video.srcObject}, 'PLAYING 1')
       // Automatic playback started!
-      // Show playing UI.
     })
     .catch(error => {  
       console.log(error)
@@ -8140,7 +8140,7 @@ navigator.mediaDevices.getUserMedia(constraintObj)
   // INITIALIZE A PEER
   function initPeer(type) {
     let init = false
-    if(type === 'init') { 
+    if(type === 'init') {
       init = true
     }
     let peer = new Peer({initiator: init, stream: stream, trickle: false})
@@ -8159,6 +8159,7 @@ navigator.mediaDevices.getUserMedia(constraintObj)
     let client = {}
     client.gotAnswer = false
     let peer =  initPeer('init')
+
     peer.on('signal', (data) => {
       if (!client.gotAnswer) {
         socket.emit('offer', data)

@@ -70,11 +70,11 @@ chat.on('connection', function (socket) {
   // VIDEO
   socket.on('newClient', async function (recipient) {
     if (clients !== 0) {
+      console.log(clients)
       io.of('chat').emit('createPeer')
     } else {
       clients++
     }
-    console.log(clients)
   })
 
   socket.on('offer', ioFunctions.sendOffer)

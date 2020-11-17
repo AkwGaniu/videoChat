@@ -20,11 +20,14 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.19.0",
-    "dotenv": "^8.2.0",dsdskj
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.0",
+    "handlebars": "^4.7.6",
     "mongoose": "^5.10.0",
     "multer": "^1.4.2",
+    "nodemailer": "^6.4.14",
+    "nodemailer-mailgun-transport": "^2.0.1",
     "nodemon": "^2.0.4",
     "shortid": "^2.2.15",
     "simple-peer": "^9.7.2",
